@@ -1,0 +1,957 @@
+{
+  "users": [
+    {
+      "id": "admin-seed-id",
+      "fullName": "System Administrator",
+      "username": "admin",
+      "email": "admin@thinkoutside.box",
+      "passwordHash": "601c8794bc78822eed99b2691e4de081:33710579013f71a486c66ca6b1bd9bda469f5339d71b9f44a5222e2cb1f0d9e22c7180f9ef02fb1353a0ddeb835daa467e78fd632dafffe8076fa4c12001b168",
+      "role": "admin",
+      "status": "active",
+      "unlockedLevel": 30,
+      "totalScore": 5000,
+      "completedLevels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "levelScores": {},
+      "createdAt": "2026-10-27T07:11:33.486Z",
+      "mustChangePassword": false
+    },
+    {
+      "id": "e64f257b-fc14-4ad9-be0d-0053b93721da",
+      "fullName": "Tournament Tester",
+      "username": "player_4704",
+      "email": "player_4704@college.edu",
+      "passwordHash": "7e589371a754a89dc42ea129b36e90e8:9460a602ac3869f2dff38f7bc5a46b52ea44dc5d4e9010b1afb54b79e4bc4cecccd76ad85eae9c94e19d7403011c2b0a5f7f8fdebfd016bc260146dd98f496f1",
+      "role": "user",
+      "status": "active",
+      "unlockedLevel": 2,
+      "totalScore": 145,
+      "completedLevels": [
+        1
+      ],
+      "levelScores": {
+        "1": 145
+      },
+      "createdAt": "2026-10-27T07:19:14.994Z",
+      "mustChangePassword": false
+    },
+    {
+      "id": "57b75efd-c5e8-4b2b-a120-cdc381a93ef1",
+      "fullName": "Milestone Champion",
+      "username": "milestone_1793085596144",
+      "email": "milestone_1793085596144@test.com",
+      "passwordHash": "955b0213f02e735308b911208d668a42:f342a2ed185fc09f79621f45bc8a2d7fcb004e06bd282241d5b93554c470a7d9df0b87d4dfd7fbf7d2289349861c3323cf0dee6e18e3066b7d13301214cec220",
+      "role": "user",
+      "status": "active",
+      "unlockedLevel": 1,
+      "totalScore": 0,
+      "completedLevels": [],
+      "levelScores": {},
+      "createdAt": "2026-10-27T07:19:56.199Z",
+      "mustChangePassword": false
+    },
+    {
+      "id": "cd6b7333-a0f8-4a5e-a1b1-a5abe56a4f0f",
+      "fullName": "T10",
+      "username": "u1793085635715",
+      "email": "e1793085635715@a.com",
+      "passwordHash": "ad4e17ebbc2908cf5a148e9b28e3c216:389bdb51f872f6a0b73af7c31d0e48be1430f1118a1e148984e93ff8079eb6226ed3a9775389b19ebf18e4a4bde3b6ea58f6df35d048e2af82c129e9987e4f7d",
+      "role": "user",
+      "status": "active",
+      "unlockedLevel": 10,
+      "totalScore": 0,
+      "completedLevels": [],
+      "levelScores": {},
+      "createdAt": "2026-10-27T07:20:35.764Z",
+      "mustChangePassword": false
+    },
+    {
+      "id": "922ccf84-0e5f-4448-8329-47cfa3846908",
+      "fullName": "Tournament Tester",
+      "username": "player_6047",
+      "email": "player_6047@college.edu",
+      "passwordHash": "58812da2bb99d19222eefe71496ecbec:75e7958ce8b65c84004c221c14242c508d0cb37e37eea313b59d1cc62943a80a3d4284099c5887f6390412ceffa1a098cfb2a1b70a42640c4a8f38df3aa9471e",
+      "role": "user",
+      "status": "active",
+      "unlockedLevel": 2,
+      "totalScore": 145,
+      "completedLevels": [
+        1
+      ],
+      "levelScores": {
+        "1": 145
+      },
+      "createdAt": "2026-10-27T07:31:33.503Z",
+      "mustChangePassword": false
+    },
+    {
+      "id": "bcd732d4-7d73-42ea-9fb4-5ecabfb1cfce",
+      "fullName": "Milestone Champion",
+      "username": "milestone_1793086331517",
+      "email": "milestone_1793086331517@test.com",
+      "passwordHash": "14b30801f92a937e0d8b75d56122122c:518f180c95e87ae52874df53a197be135dd1f1287abdea8e5c4e69bc3f72d1436d304518104a8d3e7a6614b2cc9a32b7f7e3349113ea65f8ca366e33aff8e2e8",
+      "role": "user",
+      "status": "active",
+      "unlockedLevel": 30,
+      "totalScore": 400,
+      "completedLevels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "levelScores": {
+        "20": 175,
+        "30": 225
+      },
+      "createdAt": "2026-10-27T07:32:11.566Z",
+      "mustChangePassword": false
+    },
+    {
+      "id": "4ceffdb7-7290-4238-ae82-58d1b03f6252",
+      "fullName": "Tournament Tester",
+      "username": "player_2637",
+      "email": "player_2637@college.edu",
+      "passwordHash": "82886e652e3ab234d738b65e6b405b08:0551edbd9fd8451821cd4c738c16bdcda642a37859c972ac460f62ebf42cda1fdcf2ae2e5b7bc001c318c2fb7557b9e58cbd31f3a95d1947d87c8023c73ba8ee",
+      "role": "user",
+      "status": "active",
+      "unlockedLevel": 2,
+      "totalScore": 145,
+      "completedLevels": [
+        1
+      ],
+      "levelScores": {
+        "1": 145
+      },
+      "createdAt": "2026-10-27T07:34:41.652Z",
+      "mustChangePassword": false
+    },
+    {
+      "id": "013fc3a2-af33-4334-98c3-25ca7c0c683f",
+      "fullName": "Milestone Champion",
+      "username": "milestone_1793086481753",
+      "email": "milestone_1793086481753@test.com",
+      "passwordHash": "1a54f806a2eaaee6213c41496f808483:bef3c20da49d86f1a0a9ae659c1366859c7120909019c167f70bd1d649cc272a6222eef35ce30ff82736031699f14b178f941d2152570f7c6630b2b486bd5a41",
+      "role": "user",
+      "status": "active",
+      "unlockedLevel": 30,
+      "totalScore": 525,
+      "completedLevels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "levelScores": {
+        "10": 125,
+        "20": 175,
+        "30": 225
+      },
+      "createdAt": "2026-10-27T07:34:41.808Z",
+      "mustChangePassword": false
+    },
+    {
+      "id": "009ac504-3ea3-4e08-bddc-c76e033c1321",
+      "fullName": "ertret",
+      "username": "eftre",
+      "email": "dreamsparks1207@gmail.com",
+      "passwordHash": "04d36ed1f2f8fac60eb245227887df63:156055cb7583f9b929d029317f0b7197a0c42909a0c0c22ec86d9aa322424e3485c9bfd1d7d3ac8202c91005035fbe5900951784b8890431b564d465397439ee",
+      "role": "user",
+      "status": "active",
+      "unlockedLevel": 12,
+      "totalScore": 960,
+      "completedLevels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "levelScores": {
+        "1": 75,
+        "2": 145,
+        "3": 55,
+        "4": 55,
+        "5": 55,
+        "6": 55,
+        "7": 125,
+        "8": 55,
+        "9": 145,
+        "10": 55,
+        "11": 140
+      },
+      "createdAt": "2026-10-27T07:44:22.792Z",
+      "mustChangePassword": false
+    }
+  ],
+  "puzzles": [
+    {
+      "id": 1,
+      "category": "easy",
+      "title": "The Silent Globetrotter",
+      "question": "What can travel all around the world while remaining trapped in a corner?",
+      "type": "text",
+      "acceptedAnswers": [
+        "stamp",
+        "a stamp",
+        "postage stamp",
+        "a postage stamp"
+      ],
+      "hints": [
+        "You see it on letters and postcards.",
+        "It gets stamped before travel.",
+        "It sticks to the corner of an envelope."
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 1
+    },
+    {
+      "id": 2,
+      "category": "easy",
+      "title": "The Doubling Chain",
+      "question": "What number logically comes next in this sequence: 2, 4, 8, 16, 32, ___?",
+      "type": "number",
+      "acceptedAnswers": [
+        "64"
+      ],
+      "hints": [
+        "Notice the operation between each step.",
+        "Each number is multiplied by two.",
+        "32 doubled equals...?"
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 2
+    },
+    {
+      "id": 3,
+      "category": "easy",
+      "title": "The First Spark",
+      "question": "You step into a freezing dark room with a single match. Inside are an oil lantern, a candle, and a fireplace. What must you light first?",
+      "type": "text",
+      "acceptedAnswers": [
+        "match",
+        "the match",
+        "a match"
+      ],
+      "hints": [
+        "None of the room items can burn on their own.",
+        "Think about what is in your hand.",
+        "You cannot light anything without lighting the match first."
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 3
+    },
+    {
+      "id": 4,
+      "category": "easy",
+      "title": "The Subtractive Word",
+      "question": "What five-letter word has \"one\" left when you take two letters away?",
+      "type": "text",
+      "acceptedAnswers": [
+        "stone",
+        "alone"
+      ],
+      "hints": [
+        "Look at the spelling of the word \"one\".",
+        "Remove the first two letters of a hard rock.",
+        "S-T-O-N-E without S-T leaves O-N-E."
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 4
+    },
+    {
+      "id": 5,
+      "category": "easy",
+      "title": "The Grandfather Clock",
+      "question": "A grandfather clock takes 6 seconds to strike 4 o'clock. How many seconds will it take to strike 8 o'clock?",
+      "type": "number",
+      "acceptedAnswers": [
+        "14",
+        "14 seconds",
+        "14s"
+      ],
+      "hints": [
+        "Between 4 strikes, there are 3 time intervals (6 ÷ 3 = 2 seconds per interval).",
+        "Count the number of intervals between 8 strikes.",
+        "8 strikes have 7 intervals: 7 × 2 seconds."
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 5
+    },
+    {
+      "id": 6,
+      "category": "easy",
+      "title": "The Featherweight Challenge",
+      "question": "What is as light as a feather, yet even the world's strongest athlete cannot hold it for more than 5 minutes?",
+      "type": "text",
+      "acceptedAnswers": [
+        "breath",
+        "their breath",
+        "his breath",
+        "her breath",
+        "a breath"
+      ],
+      "hints": [
+        "You do it naturally thousands of times a day.",
+        "It is completely weightless air.",
+        "Try holding it right now!"
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 6
+    },
+    {
+      "id": 7,
+      "category": "easy",
+      "title": "The Inverted Symmetry",
+      "question": "Which three-digit number composed of identical digits remains completely unchanged when rotated 180 degrees (upside down)?",
+      "type": "number",
+      "acceptedAnswers": [
+        "888"
+      ],
+      "hints": [
+        "Digits like 1, 0, and 8 have rotational symmetry.",
+        "All three digits must be identical.",
+        "Three eights upside down are still three eights."
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 7
+    },
+    {
+      "id": 8,
+      "category": "easy",
+      "title": "The River Crossing Choice",
+      "question": "A farmer needs to cross a river with a fox, a goose, and grain. If left alone, the fox eats the goose, and the goose eats the grain. Which item must he row across FIRST?",
+      "type": "text",
+      "acceptedAnswers": [
+        "goose",
+        "the goose"
+      ],
+      "hints": [
+        "Leaving the fox with grain is completely safe.",
+        "Neither the fox eats grain, nor grain eats fox.",
+        "Take the animal that eats grain and is eaten by the fox!"
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 8
+    },
+    {
+      "id": 9,
+      "category": "easy",
+      "title": "The Calendar Observation",
+      "question": "Some months have 31 days; others have 30 days. How many months in a year have 28 days?",
+      "type": "number",
+      "acceptedAnswers": [
+        "12",
+        "all 12",
+        "all of them"
+      ],
+      "hints": [
+        "Read carefully: having 28 days does not mean ONLY 28 days.",
+        "Does March have 28 days? Yes, and three more!",
+        "Every single month has at least 28 days."
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 9
+    },
+    {
+      "id": 10,
+      "category": "easy",
+      "title": "The Counting Proverb",
+      "question": "If two is company, and three is a crowd, what are four and five?",
+      "type": "number",
+      "acceptedAnswers": [
+        "9",
+        "nine"
+      ],
+      "hints": [
+        "Don't think in idioms; think in basic arithmetic!",
+        "What is the sum of four and five?",
+        "4 + 5 = ?"
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 10
+    },
+    {
+      "id": 11,
+      "category": "medium",
+      "title": "The Word Count Cipher",
+      "question": "In a secret logic cipher: 1 = 3, 2 = 3, 3 = 5, 4 = 4, 5 = 4, 6 = 3. What does 7 equal?",
+      "type": "number",
+      "acceptedAnswers": [
+        "5",
+        "five"
+      ],
+      "hints": [
+        "Spell out the numbers as English words.",
+        "ONE has 3 letters. TWO has 3 letters. THREE has 5 letters.",
+        "How many letters are in the word \"SEVEN\"?"
+      ],
+      "points": 150,
+      "enabled": true,
+      "order": 11
+    },
+    {
+      "id": 12,
+      "category": "medium",
+      "title": "The Poison Bottle Protocol",
+      "question": "A royal cellar has 8 wine bottles, exactly one of which is poisoned. A chemical test strip takes 24 hours to change color. What is the MINIMUM number of test strips needed to identify the exact poisoned bottle in 24 hours?",
+      "type": "number",
+      "acceptedAnswers": [
+        "3",
+        "three"
+      ],
+      "hints": [
+        "Think about binary numbering representation.",
+        "Each test strip has 2 states: color change or no change.",
+        "2 to the power of 3 equals 8."
+      ],
+      "points": 150,
+      "enabled": true,
+      "order": 12
+    },
+    {
+      "id": 13,
+      "category": "medium",
+      "title": "The Cardinal Initial Sequence",
+      "question": "What is the next letter in this sequence: O, T, T, F, F, S, S, E, ___?",
+      "type": "text",
+      "acceptedAnswers": [
+        "n",
+        "N"
+      ],
+      "hints": [
+        "Read the letters aloud while counting from 1.",
+        "One, Two, Three, Four, Five, Six, Seven, Eight...",
+        "What is the first letter of \"Nine\"?"
+      ],
+      "points": 150,
+      "enabled": true,
+      "order": 13
+    },
+    {
+      "id": 14,
+      "category": "medium",
+      "title": "The Bookshelf Voyage",
+      "question": "Volume 1 and Volume 2 stand side-by-side in order on a bookshelf. Each volume is 2 inches thick, including front and back covers of 0.25 inches each. A bookworm chews straight from the front cover of Volume 1 to the back cover of Volume 2. How many inches total did the bookworm travel?",
+      "type": "number",
+      "acceptedAnswers": [
+        "0.5",
+        "0.5 inches",
+        "1/2",
+        "half inch"
+      ],
+      "hints": [
+        "Place two books side by side on a shelf and examine where the front cover of Vol 1 is.",
+        "The front cover of Volume 1 touches the back cover of Volume 2!",
+        "It only chewed through the two adjacent covers (0.25 + 0.25)."
+      ],
+      "points": 150,
+      "enabled": true,
+      "order": 14
+    },
+    {
+      "id": 15,
+      "category": "medium",
+      "title": "The Age Discrepancy",
+      "question": "Alice is currently 12 years old. In 2 years, Alice will be twice as old as Bob was 2 years ago. How old is Bob today?",
+      "type": "number",
+      "acceptedAnswers": [
+        "9",
+        "nine"
+      ],
+      "hints": [
+        "Alice in 2 years will be 14.",
+        "14 is twice Bob's age from 2 years ago, meaning Bob was 7.",
+        "If Bob was 7 two years ago, how old is he today?"
+      ],
+      "points": 150,
+      "enabled": true,
+      "order": 15
+    },
+    {
+      "id": 16,
+      "category": "medium",
+      "title": "The Parking Bay Reversal",
+      "question": "A car is parked in a row with visible spot numbers: 16, 06, 68, 88, [CAR], 98. What is the number of the parking spot under the car?",
+      "type": "number",
+      "acceptedAnswers": [
+        "87"
+      ],
+      "hints": [
+        "The driver sees the numbers from the driver's seat when pulling in.",
+        "Turn your perspective upside down 180 degrees.",
+        "The sequence upside down is 86, 87, 88, 89, 90, 91."
+      ],
+      "points": 150,
+      "enabled": true,
+      "order": 16
+    },
+    {
+      "id": 17,
+      "category": "medium",
+      "title": "The Counterfeit Gold Coin",
+      "question": "You have 9 identical-looking gold coins, but one is a lighter counterfeit. What is the MINIMUM number of weighings on a two-pan balance scale guaranteed to identify the fake coin?",
+      "type": "number",
+      "acceptedAnswers": [
+        "2",
+        "two"
+      ],
+      "hints": [
+        "Divide the 9 coins into 3 groups of 3 coins each.",
+        "Weigh group 1 vs group 2. If balanced, the fake is in group 3.",
+        "Weighing two coins from the suspect group of 3 isolates the fake in 1 more step."
+      ],
+      "points": 150,
+      "enabled": true,
+      "order": 17
+    },
+    {
+      "id": 18,
+      "category": "medium",
+      "title": "The Elevator Inhabitant",
+      "question": "A man lives on the 10th floor. On sunny days, he takes the elevator to the 7th floor and walks the rest. On rainy days or when others are in the elevator, he rides all the way to the 10th floor. Why does he do this?",
+      "type": "text",
+      "acceptedAnswers": [
+        "short",
+        "he is short",
+        "too short",
+        "dwarf",
+        "umbrella",
+        "he cannot reach the button",
+        "cannot reach"
+      ],
+      "hints": [
+        "It is a physical limitation, not a fitness routine.",
+        "Why would an umbrella on rainy days help him?",
+        "He cannot reach the button for the 10th floor!"
+      ],
+      "points": 150,
+      "enabled": true,
+      "order": 18
+    },
+    {
+      "id": 19,
+      "category": "medium",
+      "title": "The Lateral Match Equality",
+      "question": "In the matchstick equation \"6 + 4 = 4\", moving ONE matchstick transforms it into a true equation. If you move the vertical stick from the plus sign to the 6, what valid arithmetic equation results? (Format: X - Y = Z)",
+      "type": "text",
+      "acceptedAnswers": [
+        "8 - 4 = 4",
+        "8-4=4"
+      ],
+      "hints": [
+        "Removing the vertical stick from + leaves a minus sign -.",
+        "Placing that stick on 6 closes the upper right slot to form 8.",
+        "8 minus 4 equals 4."
+      ],
+      "points": 150,
+      "enabled": true,
+      "order": 19
+    },
+    {
+      "id": 20,
+      "category": "medium",
+      "title": "The Terra Incognita",
+      "question": "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. I have roads, but no cars. What am I?",
+      "type": "text",
+      "acceptedAnswers": [
+        "map",
+        "a map",
+        "atlas",
+        "an atlas",
+        "world map"
+      ],
+      "hints": [
+        "You unfold it to navigate.",
+        "It represents geographical territory.",
+        "Cartographers draw it."
+      ],
+      "points": 150,
+      "enabled": true,
+      "order": 20
+    },
+    {
+      "id": 21,
+      "category": "hard",
+      "title": "The Zebra Puzzle Deduction",
+      "question": "In the famous five-house logic puzzle: The Brit lives in the red house, the Swede keeps dogs, the Dane drinks tea, the Norwegian lives in the first house. Who owns the fish?",
+      "type": "text",
+      "acceptedAnswers": [
+        "german",
+        "the german",
+        "germany"
+      ],
+      "hints": [
+        "Form a 5x5 grid of nationality, color, pet, beverage, and smokes.",
+        "The green house is to the left of the white house and its owner drinks coffee.",
+        "Through elimination, the German smokes Prince and keeps the fish."
+      ],
+      "points": 200,
+      "enabled": true,
+      "order": 21
+    },
+    {
+      "id": 22,
+      "category": "hard",
+      "title": "The Non-Uniform Burning Ropes",
+      "question": "You have two ropes, each taking exactly 60 minutes to burn completely, but they burn with inconsistent thickness (non-uniformly). By lighting Rope 1 at both ends and Rope 2 at one end, then lighting the other end of Rope 2 when Rope 1 burns out, what exact number of minutes can you measure?",
+      "type": "number",
+      "acceptedAnswers": [
+        "45",
+        "45 minutes",
+        "45 mins"
+      ],
+      "hints": [
+        "Lighting a 60-minute rope at both ends burns it in exactly 30 minutes.",
+        "At 30 minutes, Rope 2 has 30 minutes of burn time remaining.",
+        "Lighting the second end of Rope 2 burns its remaining 30 minutes in 15 minutes: 30 + 15 = ?"
+      ],
+      "points": 200,
+      "enabled": true,
+      "order": 22
+    },
+    {
+      "id": 23,
+      "category": "hard",
+      "title": "The Monty Hall Strict Odds",
+      "question": "You pick Door 1 out of 3 doors. The host, who knows what is behind each door, opens Door 3 revealing a goat. If you switch to Door 2, what is your exact mathematical probability of winning the sports car? (Express as a fraction, e.g., 2/3)",
+      "type": "text",
+      "acceptedAnswers": [
+        "2/3",
+        "2 / 3",
+        "0.67",
+        "66.7%"
+      ],
+      "hints": [
+        "Your initial choice had a 1/3 chance of being correct.",
+        "The remaining 2/3 probability was concentrated in the other two doors.",
+        "Since the host eliminates a losing door, that entire 2/3 probability shifts to the remaining closed door."
+      ],
+      "points": 200,
+      "enabled": true,
+      "order": 23
+    },
+    {
+      "id": 24,
+      "category": "hard",
+      "title": "The Two Sand Hourglasses",
+      "question": "You have only two hourglasses: a 7-minute timer and an 11-minute timer. What is the SHORTEST total elapsed time in minutes needed to measure exactly 15 minutes of boiling?",
+      "type": "number",
+      "acceptedAnswers": [
+        "15",
+        "15 minutes"
+      ],
+      "hints": [
+        "Start both timers simultaneously when boiling begins.",
+        "When the 7-minute timer runs out, 4 minutes remain in the 11-minute timer.",
+        "Flip the 7-minute timer at minute 11 (after 4 minutes have accumulated in it), running exactly 4 more minutes: 11 + 4 = 15."
+      ],
+      "points": 200,
+      "enabled": true,
+      "order": 24
+    },
+    {
+      "id": 25,
+      "category": "hard",
+      "title": "The Epistemic Blue Eyes Logic",
+      "question": "On an island with 100 blue-eyed and 100 brown-eyed logicians, everyone can see everyone else's eyes but does not know their own. A prophet announces: \"I see someone with blue eyes.\" By induction, on which night will all 100 blue-eyed people leave together on the midnight ferry?",
+      "type": "number",
+      "acceptedAnswers": [
+        "100",
+        "100th",
+        "the 100th night",
+        "100th night"
+      ],
+      "hints": [
+        "Consider base cases: if there was 1 blue-eyed person, they would leave on Night 1.",
+        "If there were 2, they would deduce it and leave on Night 2.",
+        "For N blue-eyed logicians, common knowledge takes N nights to resolve."
+      ],
+      "points": 200,
+      "enabled": true,
+      "order": 25
+    },
+    {
+      "id": 26,
+      "category": "hard",
+      "title": "The Court of Knights and Knaves",
+      "question": "On an island where Knights always tell the truth and Knaves always lie, Person A says: \"Both of us are Knaves.\" Person B says nothing. What is Person A: Knight or Knave?",
+      "type": "text",
+      "acceptedAnswers": [
+        "knave",
+        "a knave"
+      ],
+      "hints": [
+        "If Person A were a Knight, his statement would be true, meaning he would have to be a Knave (a contradiction).",
+        "Therefore Person A cannot be a Knight.",
+        "Since Person A is a Knave, his statement is false, which means Person B is a Knight!"
+      ],
+      "points": 200,
+      "enabled": true,
+      "order": 26
+    },
+    {
+      "id": 27,
+      "category": "hard",
+      "title": "The Exponential Chessboard Row",
+      "question": "A sage asks for 1 grain of wheat on square 1, 2 grains on square 2, 4 on square 3, doubling each square. What is the TOTAL number of grains on the first 8 squares (the first complete row)?",
+      "type": "number",
+      "acceptedAnswers": [
+        "255"
+      ],
+      "hints": [
+        "Sum = 1 + 2 + 4 + 8 + 16 + 32 + 64 + 128.",
+        "The sum of powers of 2 from 2^0 to 2^(n-1) equals 2^n - 1.",
+        "2^8 - 1 = 256 - 1."
+      ],
+      "points": 200,
+      "enabled": true,
+      "order": 27
+    },
+    {
+      "id": 28,
+      "category": "hard",
+      "title": "The Modular Dial Crypt",
+      "question": "A 12-position radial dial starts pointing at 12. You rotate clockwise by 5, counter-clockwise by 8, clockwise by 11, and counter-clockwise by 4. What number does the dial point to?",
+      "type": "number",
+      "acceptedAnswers": [
+        "4",
+        "four"
+      ],
+      "hints": [
+        "Calculate net movement: (+5) + (-8) + (+11) + (-4).",
+        "Net movement = +4 positions clockwise from 12.",
+        "12 + 4 positions clockwise on a 12-hour clock face points to...?"
+      ],
+      "points": 200,
+      "enabled": true,
+      "order": 28
+    },
+    {
+      "id": 29,
+      "category": "hard",
+      "title": "The 100 Prisoners Light Switch",
+      "question": "100 prisoners are in solitary confinement. A switch room has one light bulb initially OFF. One prisoner is designated the \"Counter\". To ensure all 100 prisoners have visited the room, how many times must the designated Counter switch the light OFF?",
+      "type": "number",
+      "acceptedAnswers": [
+        "99",
+        "99 times"
+      ],
+      "hints": [
+        "Protocol: each of the other 99 prisoners turns the light ON the first time they enter and see it OFF.",
+        "The designated Counter turns the light OFF each time he finds it ON and adds 1 to his count.",
+        "When the Counter has turned it OFF 99 times, all 99 other prisoners have visited."
+      ],
+      "points": 200,
+      "enabled": true,
+      "order": 29
+    },
+    {
+      "id": 30,
+      "category": "hard",
+      "title": "The Grandmaster Resonator",
+      "question": "I speak without a voice and hear without ears. I have no physical body, but I come alive with the wind. The more you shout at me, the more clearly I return your words. What am I?",
+      "type": "text",
+      "acceptedAnswers": [
+        "echo",
+        "an echo"
+      ],
+      "hints": [
+        "Sound waves bouncing off canyon walls.",
+        "It replicates what you say.",
+        "It repeats your own voice."
+      ],
+      "points": 200,
+      "enabled": true,
+      "order": 30
+    }
+  ],
+  "settings": {
+    "easyTimer": 90,
+    "mediumTimer": 120,
+    "hardTimer": 150,
+    "easyPoints": 100,
+    "mediumPoints": 150,
+    "hardPoints": 200,
+    "hintPenalty": 15,
+    "noHintsBonus": 25,
+    "speedBonus": 20,
+    "shuffleEasy": false,
+    "shuffleMedium": false,
+    "shuffleHard": false,
+    "rulesAnnouncement": "Welcome to Think Outside the Box! Complete puzzles sequentially to unlock higher stages. Avoid hint penalties to maximize your tournament standing."
+  },
+  "sessions": [
+    {
+      "token": "dad563edaa5d5ba853459543804f3c0df73d3e95f5a1e39ffcebdd147f76f258",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793690095305
+    },
+    {
+      "token": "f33592b335c3f97765d6a7a03118fc46cab56bfc1cd6b064a32e3a6e75e53878",
+      "userId": "e64f257b-fc14-4ad9-be0d-0053b93721da",
+      "role": "user",
+      "expiresAt": 1793690354995
+    },
+    {
+      "token": "bd68d4ed43df41148f50b6a763348d61fc18024593ee9f36f5314a986dbd23dc",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793690355040
+    },
+    {
+      "token": "b34eaa28b1644a5c9a621b870244930fe62564798a88f9c42ec2f0eff3dbe4e6",
+      "userId": "57b75efd-c5e8-4b2b-a120-cdc381a93ef1",
+      "role": "user",
+      "expiresAt": 1793690396201
+    },
+    {
+      "token": "117abb13c1f12aff99e5d570228971288191a5310eed4e7be04116dabacabfe7",
+      "userId": "cd6b7333-a0f8-4a5e-a1b1-a5abe56a4f0f",
+      "role": "user",
+      "expiresAt": 1793690435766
+    },
+    {
+      "token": "ac677523283d8e2b30978534aebbc3ae6bc497cfeea0c6fe360c655d57190f65",
+      "userId": "922ccf84-0e5f-4448-8329-47cfa3846908",
+      "role": "user",
+      "expiresAt": 1793691093505
+    },
+    {
+      "token": "dac89278cc59e02fd47c6705d67aae3ac042ddfe06174451a9022b121221c67f",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793691093553
+    },
+    {
+      "token": "6e6c84497351a7289a0ba06f012748d3f7094ec0a81343672b31520bb5cd2428",
+      "userId": "bcd732d4-7d73-42ea-9fb4-5ecabfb1cfce",
+      "role": "user",
+      "expiresAt": 1793691131568
+    },
+    {
+      "token": "89aa2b5042ae15667e99d59e4f5130f254cf49ab5eef858f553d10ee4584ecc0",
+      "userId": "4ceffdb7-7290-4238-ae82-58d1b03f6252",
+      "role": "user",
+      "expiresAt": 1793691281654
+    },
+    {
+      "token": "f6a46a84b7acf042fdc2dfaac644d714492331b5b86b62bcd44ffbdbd8fb1e96",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793691281699
+    },
+    {
+      "token": "e446b5ef2818c5b2180a5bdb785adca8819baa853b162ab0ffc595685df043f0",
+      "userId": "013fc3a2-af33-4334-98c3-25ca7c0c683f",
+      "role": "user",
+      "expiresAt": 1793691281810
+    },
+    {
+      "token": "42c3687f406ac59d03ddcb488917bd5f4fbd929ce229b76c845645d789f39e45",
+      "userId": "009ac504-3ea3-4e08-bddc-c76e033c1321",
+      "role": "user",
+      "expiresAt": 1793691862794
+    }
+  ],
+  "passwordResets": []
+}
