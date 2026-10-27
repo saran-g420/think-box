@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "test": "node test_master_flow.js && node test_milestones.js",
+    "test": "node test_platform_features.js && node test_master_flow.js && node test_milestones.js && node test_puzzle_instances.js && node test_game_logic.js",
     "dev": "node server.js",
     "build": "tsc -b && vite build",
     "lint": "oxlint",

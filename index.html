@@ -112,7 +112,7 @@
         <div>
           <h2 class="dash-user-title" id="dash-greeting">Welcome back, Player!</h2>
           <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 4px;">
-            Solve puzzles sequentially to unlock new levels and climb the tournament leaderboard.
+            Every puzzle is playable from the start. Earn points to unlock difficulty milestones and climb the leaderboard.
           </p>
         </div>
         <button class="btn-cyan" id="btn-dash-continue" style="padding: 12px 28px; font-size: 0.95rem;">
@@ -131,13 +131,29 @@
           <span class="stat-value" id="stat-completed-count">0 / 30</span>
         </div>
         <div class="dash-stat-box">
-          <span class="stat-label">Current Unlocked Level</span>
-          <span class="stat-value" id="stat-unlocked-level" style="color: var(--accent-cyan);">Level 1</span>
+          <span class="stat-label">Difficulty Progress</span>
+          <span class="stat-value" id="stat-unlocked-level" style="color: var(--accent-cyan);">Easy</span>
         </div>
         <div class="dash-stat-box">
           <span class="stat-label">Overall Progress</span>
           <span class="stat-value" id="stat-progress-pct" style="color: #6ee7b7;">0%</span>
         </div>
+      </div>
+
+      <div class="account-code-card">
+        <div>
+          <strong>Your TECH game code</strong>
+          <p>Use this code with your Player ID and password whenever you sign in.</p>
+        </div>
+        <code id="player-game-code">—</code>
+      </div>
+      <div class="progression-card">
+        <div class="progression-head">
+          <strong>Difficulty milestones</strong>
+          <span id="progression-status">Easy available</span>
+        </div>
+        <div class="progression-track"><div id="progression-bar"></div></div>
+        <p id="progression-message">Earn points to unlock Medium and Hard milestones. All puzzles remain playable.</p>
       </div>
 
       <!-- Category Tabs (Easy 1-10, Medium 11-20, Hard 21-30, All 1-30) -->
@@ -172,6 +188,7 @@
             <div style="font-weight: 800; font-size: 1.1rem; color: var(--accent-amber);" id="arena-points-chip">
               ★ 100 pts
             </div>
+            <div class="session-score-chip" id="arena-session-score">Session: 0 pts</div>
             <button class="btn-secondary" id="btn-arena-back" style="padding: 6px 14px; font-size: 0.85rem;">
               Back to Levels
             </button>
@@ -187,14 +204,25 @@
             What can travel all around the world while remaining trapped in a corner?
           </div>
 
+          <div id="matchstick-container" class="matchstick-container" style="display: none;">
+            <p class="matchstick-instructions">Select one lit matchstick, then tap an empty segment to move it.</p>
+            <div class="matchstick-difficulty" id="matchstick-difficulty" aria-label="Matchstick puzzle difficulty"></div>
+            <div id="matchstick-board" aria-label="Interactive matchstick equation"></div>
+            <div id="matchstick-live-equation" class="matchstick-live-equation"></div>
+          </div>
+
           <!-- Answer Input Area -->
           <div class="form-group" style="margin-top: 10px;">
             <label class="form-label">Your Answer:</label>
-            <div class="answer-input-zone">
+            <div class="answer-input-zone" id="text-answer-zone">
               <input type="text" id="arena-answer-input" class="form-input" placeholder="Type your answer here..." autocomplete="off" />
               <button class="btn-cyan" id="btn-arena-submit" style="padding: 14px 28px;">
                 <span>✓</span> Submit Answer
               </button>
+            </div>
+            <div class="puzzle-action-row">
+              <button class="btn-cyan" id="btn-matchstick-submit" style="display: none;">✓ Submit Equation</button>
+              <button class="btn-secondary" id="btn-arena-skip">Skip Question →</button>
             </div>
           </div>
 
@@ -237,8 +265,11 @@
               <tr>
                 <th>Rank</th>
                 <th>Player</th>
+                <th>Game Code</th>
                 <th>Total Score</th>
                 <th>Completed</th>
+                <th>Correct</th>
+                <th>Highest Level</th>
                 <th>Progress</th>
               </tr>
             </thead>
@@ -246,6 +277,23 @@
               <!-- Populated dynamically -->
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-gameover" class="view-section">
+      <div class="question-card gameover-card">
+        <div class="hero-badge">⏱ SESSION COMPLETE</div>
+        <h2>Game Over</h2>
+        <p>Your global game timer has ended. Your results have been saved.</p>
+        <div class="gameover-results">
+          <div><span>Final score</span><strong id="gameover-score">0</strong></div>
+          <div><span>Puzzles solved</span><strong id="gameover-solved">0</strong></div>
+          <div><span>Levels completed</span><strong id="gameover-levels">0</strong></div>
+        </div>
+        <div class="puzzle-action-row">
+          <button class="btn-primary" id="btn-gameover-dashboard">Return to Dashboard</button>
+          <button class="btn-secondary" id="btn-gameover-leaderboard">View Leaderboard</button>
         </div>
       </div>
     </section>
@@ -297,18 +345,19 @@
       <!-- Subpanel 2: User Management -->
       <div class="admin-subpanel" id="admin-panel-users">
         <div style="display: flex; gap: 12px; margin-bottom: 20px;">
-          <input type="text" id="admin-user-search" class="form-input" placeholder="Search by username, full name, or email..." style="max-width: 400px;" />
+          <input type="text" id="admin-user-search" class="form-input" placeholder="Search by Player ID, game code, name, college, or email..." style="max-width: 400px;" />
           <button class="btn-secondary" id="btn-search-users">Search</button>
         </div>
         <div class="scoreboard-table-wrap">
           <table class="scoreboard-table">
             <thead>
               <tr>
-                <th>Player</th>
+                <th>Player / Game Code</th>
+                <th>College / Registered</th>
                 <th>Email</th>
                 <th>Status</th>
-                <th>Level</th>
-                <th>Score</th>
+                <th>Progress / Time Left</th>
+                <th>Score / Correct</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -382,6 +431,26 @@
               <input type="number" id="setting-hard-timer" class="form-input" min="30" max="300" />
             </div>
             <div class="form-group">
+              <label class="form-label">Global Game Duration (Seconds):</label>
+              <input type="number" id="setting-game-duration" class="form-input" min="60" max="86400" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Medium Unlock Threshold (Points):</label>
+              <input type="number" id="setting-medium-threshold" class="form-input" min="0" max="1000000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Hard Unlock Threshold (Points):</label>
+              <input type="number" id="setting-hard-threshold" class="form-input" min="0" max="1000000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Skip Penalty (Points, 0 = no penalty):</label>
+              <input type="number" id="setting-skip-penalty" class="form-input" min="0" max="1000000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label"><input type="checkbox" id="setting-skip-enabled" /> Allow players to skip puzzles</label>
+              <label class="form-label"><input type="checkbox" id="setting-hints-enabled" /> Enable hints</label>
+            </div>
+            <div class="form-group">
               <label class="form-label">Hint Penalty Points (per hint):</label>
               <input type="number" id="setting-hint-penalty" class="form-input" min="0" max="50" />
             </div>
@@ -438,8 +507,12 @@
         <!-- Sign In Form -->
         <form id="form-login" style="display: flex; flex-direction: column; gap: 14px;">
           <div class="form-group">
-            <label class="form-label">Username or Email</label>
-            <input type="text" id="login-username" class="form-input" required placeholder="Enter username or email" />
+            <label class="form-label">Player ID (admins may use username)</label>
+            <input type="text" id="login-username" class="form-input" required placeholder="Enter your Player ID" />
+          </div>
+          <div class="form-group" id="login-game-code-group">
+            <label class="form-label">TECH Game Code</label>
+            <input type="text" id="login-game-code" class="form-input" placeholder="TECH-12345" />
           </div>
           <div class="form-group">
             <label class="form-label">Password</label>
@@ -459,16 +532,20 @@
             <input type="text" id="reg-fullname" class="form-input" required placeholder="e.g. Alex Morgan" />
           </div>
           <div class="form-group">
-            <label class="form-label">Username</label>
-            <input type="text" id="reg-username" class="form-input" required placeholder="Choose a unique username" />
+            <label class="form-label">Unique Player ID</label>
+            <input type="text" id="reg-username" class="form-input" required placeholder="Letters, numbers, dot, underscore, or hyphen" />
           </div>
           <div class="form-group">
-            <label class="form-label">Email Address</label>
-            <input type="email" id="reg-email" class="form-input" required placeholder="name@college.edu" />
+            <label class="form-label">College Name (optional)</label>
+            <input type="text" id="reg-college" class="form-input" placeholder="College or institution" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address (optional)</label>
+            <input type="email" id="reg-email" class="form-input" placeholder="name@college.edu" />
           </div>
           <div class="form-group">
             <label class="form-label">Password</label>
-            <input type="password" id="reg-password" class="form-input" required placeholder="Minimum 6 characters" />
+            <input type="password" id="reg-password" class="form-input" required placeholder="Minimum 8 characters" />
           </div>
           <div class="form-group">
             <label class="form-label">Confirm Password</label>
@@ -487,15 +564,28 @@
       <div class="modal-card">
         <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 12px;">Reset Password</h2>
         <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 16px;">
-          Enter your registered username or email to submit a reset request. The administrator will assign you a temporary password.
+          Request a reset from the administrator, then enter the one-time reset code they provide. The code expires after one hour.
         </p>
         <div class="form-group">
           <input type="text" id="forgot-username-input" class="form-input" placeholder="Username or Email" />
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label">One-time reset code</label>
+          <input type="text" id="forgot-reset-code" class="form-input" autocomplete="one-time-code" />
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label">New password</label>
+          <input type="password" id="forgot-new-password" class="form-input" placeholder="At least 8 characters" />
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label">Confirm new password</label>
+          <input type="password" id="forgot-confirm-password" class="form-input" placeholder="Confirm password" />
         </div>
         <div style="display: flex; gap: 10px; margin-top: 16px;">
           <button class="btn-secondary" id="btn-cancel-forgot" style="flex: 1;">Cancel</button>
           <button class="btn-primary" id="btn-submit-forgot" style="flex: 1;">Request Reset</button>
         </div>
+        <button class="btn-cyan" id="btn-complete-password-reset" style="width: 100%; margin-top: 10px;">Reset Password with Code</button>
       </div>
     </div>
 

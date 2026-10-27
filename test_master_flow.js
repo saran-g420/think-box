@@ -18,7 +18,7 @@ function assert(cond, msg) {
 }
 
 async function run() {
-  const BASE = 'http://127.0.0.1:3000';
+  const BASE = process.env.TEST_BASE || 'http://127.0.0.1:3000';
 
   // 1. Register a test player
   console.log('\n[Phase 1] User Registration & Authentication');
@@ -43,16 +43,16 @@ async function run() {
     'Authorization': `Bearer ${playerToken}`
   };
 
-  // 2. Verify Level 1 is unlocked, but Level 2 is locked
-  console.log('\n[Phase 2] Strict Sequential Level Gating');
+  // 2. Verify all levels are available immediately
+  console.log('\n[Phase 2] Open Level Access');
   const lvl1Res = await fetch(`${BASE}/api/puzzles/1`, { headers: playerHeaders });
   const lvl1Data = await lvl1Res.json();
   assert(lvl1Res.status === 200 && lvl1Data.puzzle.id === 1, 'Level 1 is accessible for new player');
 
   const lvl2Res = await fetch(`${BASE}/api/puzzles/2`, { headers: playerHeaders });
   const lvl2Data = await lvl2Res.json();
-  assert(lvl2Res.status === 403 && lvl2Data.error === 'Complete the previous level to unlock this level.', 
-    'Level 2 is strictly locked with message: "Complete the previous level to unlock this level."');
+  assert(lvl2Res.status === 200 && lvl2Data.puzzle.id === 2,
+    'Level 2 is immediately accessible without completing Level 1');
 
   // 3. Test wrong answer submission
   console.log('\n[Phase 3] Answer Validation & Scoring');
@@ -72,7 +72,7 @@ async function run() {
   });
   const correctData = await correctRes.json();
   assert(correctData.correct === true && correctData.earnedScore > 0, 'Correct answer accepted and points awarded');
-  assert(correctData.unlockedLevel === 2, 'Level 2 is now unlocked');
+  assert(correctData.unlockedLevel === 30, 'All levels remain accessible after earning points');
 
   // 5. Verify Level 2 is now unlocked and accessible
   const lvl2NowRes = await fetch(`${BASE}/api/puzzles/2`, { headers: playerHeaders });
@@ -110,6 +110,14 @@ async function run() {
   console.log(`\n========================================`);
   console.log(`TEST SUITE FINISHED: ${passed}/${total} TESTS PASSED`);
   console.log(`========================================\n`);
+
+  const { db } = await import('./server/db.js');
+  db.getUsers();
+  db.data.users = db.data.users.filter(user => user.id !== regData.user.id);
+  db.data.sessions = db.data.sessions.filter(session => session.userId !== regData.user.id);
+  db.data.gameSessions = db.data.gameSessions.filter(session => session.userId !== regData.user.id);
+  db.data.passwordResets = db.data.passwordResets.filter(reset => reset.userId !== regData.user.id);
+  db.save();
 }
 
 run().catch(console.error);

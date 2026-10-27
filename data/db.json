@@ -44,7 +44,12 @@
       ],
       "levelScores": {},
       "createdAt": "2026-10-27T07:11:33.486Z",
-      "mustChangePassword": false
+      "mustChangePassword": false,
+      "playerId": "admin",
+      "collegeName": "",
+      "correctAnswers": 30,
+      "skippedLevels": [],
+      "gameHistory": []
     },
     {
       "id": "e64f257b-fc14-4ad9-be0d-0053b93721da",
@@ -63,7 +68,13 @@
         "1": 145
       },
       "createdAt": "2026-10-27T07:19:14.994Z",
-      "mustChangePassword": false
+      "mustChangePassword": false,
+      "playerId": "player_4704",
+      "collegeName": "",
+      "correctAnswers": 1,
+      "skippedLevels": [],
+      "gameHistory": [],
+      "gameCode": "TECH-87903"
     },
     {
       "id": "57b75efd-c5e8-4b2b-a120-cdc381a93ef1",
@@ -78,7 +89,13 @@
       "completedLevels": [],
       "levelScores": {},
       "createdAt": "2026-10-27T07:19:56.199Z",
-      "mustChangePassword": false
+      "mustChangePassword": false,
+      "playerId": "milestone_1793085596144",
+      "collegeName": "",
+      "correctAnswers": 0,
+      "skippedLevels": [],
+      "gameHistory": [],
+      "gameCode": "TECH-20631"
     },
     {
       "id": "cd6b7333-a0f8-4a5e-a1b1-a5abe56a4f0f",
@@ -93,7 +110,13 @@
       "completedLevels": [],
       "levelScores": {},
       "createdAt": "2026-10-27T07:20:35.764Z",
-      "mustChangePassword": false
+      "mustChangePassword": false,
+      "playerId": "u1793085635715",
+      "collegeName": "",
+      "correctAnswers": 0,
+      "skippedLevels": [],
+      "gameHistory": [],
+      "gameCode": "TECH-66522"
     },
     {
       "id": "922ccf84-0e5f-4448-8329-47cfa3846908",
@@ -112,7 +135,13 @@
         "1": 145
       },
       "createdAt": "2026-10-27T07:31:33.503Z",
-      "mustChangePassword": false
+      "mustChangePassword": false,
+      "playerId": "player_6047",
+      "collegeName": "",
+      "correctAnswers": 1,
+      "skippedLevels": [],
+      "gameHistory": [],
+      "gameCode": "TECH-55049"
     },
     {
       "id": "bcd732d4-7d73-42ea-9fb4-5ecabfb1cfce",
@@ -161,7 +190,13 @@
         "30": 225
       },
       "createdAt": "2026-10-27T07:32:11.566Z",
-      "mustChangePassword": false
+      "mustChangePassword": false,
+      "playerId": "milestone_1793086331517",
+      "collegeName": "",
+      "correctAnswers": 30,
+      "skippedLevels": [],
+      "gameHistory": [],
+      "gameCode": "TECH-68547"
     },
     {
       "id": "4ceffdb7-7290-4238-ae82-58d1b03f6252",
@@ -180,7 +215,13 @@
         "1": 145
       },
       "createdAt": "2026-10-27T07:34:41.652Z",
-      "mustChangePassword": false
+      "mustChangePassword": false,
+      "playerId": "player_2637",
+      "collegeName": "",
+      "correctAnswers": 1,
+      "skippedLevels": [],
+      "gameHistory": [],
+      "gameCode": "TECH-66099"
     },
     {
       "id": "013fc3a2-af33-4334-98c3-25ca7c0c683f",
@@ -230,7 +271,13 @@
         "30": 225
       },
       "createdAt": "2026-10-27T07:34:41.808Z",
-      "mustChangePassword": false
+      "mustChangePassword": false,
+      "playerId": "milestone_1793086481753",
+      "collegeName": "",
+      "correctAnswers": 30,
+      "skippedLevels": [],
+      "gameHistory": [],
+      "gameCode": "TECH-48796"
     },
     {
       "id": "009ac504-3ea3-4e08-bddc-c76e033c1321",
@@ -269,26 +316,51 @@
         "11": 140
       },
       "createdAt": "2026-10-27T07:44:22.792Z",
-      "mustChangePassword": false
+      "mustChangePassword": false,
+      "playerId": "eftre",
+      "collegeName": "",
+      "correctAnswers": 11,
+      "skippedLevels": [],
+      "gameHistory": [],
+      "gameCode": "TECH-44208"
+    },
+    {
+      "id": "32c5f882-d94c-4c3e-a2e8-afc8ef1cc23f",
+      "fullName": "jafjsn",
+      "username": "dkldkls",
+      "email": "kmddfkmskldm@kmkam",
+      "passwordHash": "0539bb27cc265303fc2db6abf6fef6f8:4dce6ec25ab7f03cedd563395528e5b0d872b86fc896c41acf0eae4946ed0ec5688ceda89bf4283b6a86c17230d7bf9eba6d25764dde709585a1e600b03e5cdb",
+      "role": "user",
+      "status": "active",
+      "unlockedLevel": 1,
+      "totalScore": 0,
+      "completedLevels": [],
+      "levelScores": {},
+      "createdAt": "2026-10-27T15:10:34.884Z",
+      "mustChangePassword": false,
+      "playerId": "dkldkls",
+      "collegeName": "",
+      "correctAnswers": 0,
+      "skippedLevels": [],
+      "gameHistory": [],
+      "gameCode": "TECH-15074"
     }
   ],
   "puzzles": [
     {
       "id": 1,
       "category": "easy",
-      "title": "The Silent Globetrotter",
-      "question": "What can travel all around the world while remaining trapped in a corner?",
-      "type": "text",
+      "title": "The Counting Proverb",
+      "question": "If two is company, and three is a crowd, what are four and five?",
+      "type": "number",
       "acceptedAnswers": [
-        "stamp",
-        "a stamp",
-        "postage stamp",
-        "a postage stamp"
+        "9",
+        "nine"
       ],
       "hints": [
-        "You see it on letters and postcards.",
-        "It gets stamped before travel.",
-        "It sticks to the corner of an envelope."
+        "Don't think in idioms; think in basic arithmetic!",
+        "What is the sum of four and five?",
+        "4 + 5 = ?"
       ],
       "points": 100,
       "enabled": true,
@@ -297,16 +369,17 @@
     {
       "id": 2,
       "category": "easy",
-      "title": "The Doubling Chain",
-      "question": "What number logically comes next in this sequence: 2, 4, 8, 16, 32, ___?",
-      "type": "number",
+      "title": "The River Crossing Choice",
+      "question": "A farmer needs to cross a river with a fox, a goose, and grain. If left alone, the fox eats the goose, and the goose eats the grain. Which item must he row across FIRST?",
+      "type": "text",
       "acceptedAnswers": [
-        "64"
+        "goose",
+        "the goose"
       ],
       "hints": [
-        "Notice the operation between each step.",
-        "Each number is multiplied by two.",
-        "32 doubled equals...?"
+        "Leaving the fox with grain is completely safe.",
+        "Neither the fox eats grain, nor grain eats fox.",
+        "Take the animal that eats grain and is eaten by the fox!"
       ],
       "points": 100,
       "enabled": true,
@@ -314,6 +387,47 @@
     },
     {
       "id": 3,
+      "category": "easy",
+      "title": "The Subtractive Word",
+      "question": "What five-letter word has \"one\" left when you take two letters away?",
+      "type": "text",
+      "acceptedAnswers": [
+        "stone",
+        "alone"
+      ],
+      "hints": [
+        "Look at the spelling of the word \"one\".",
+        "Remove the first two letters of a hard rock.",
+        "S-T-O-N-E without S-T leaves O-N-E."
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 3
+    },
+    {
+      "id": 4,
+      "category": "easy",
+      "title": "The Featherweight Challenge",
+      "question": "What is as light as a feather, yet even the world's strongest athlete cannot hold it for more than 5 minutes?",
+      "type": "text",
+      "acceptedAnswers": [
+        "breath",
+        "their breath",
+        "his breath",
+        "her breath",
+        "a breath"
+      ],
+      "hints": [
+        "You do it naturally thousands of times a day.",
+        "It is completely weightless air.",
+        "Try holding it right now!"
+      ],
+      "points": 100,
+      "enabled": true,
+      "order": 4
+    },
+    {
+      "id": 5,
       "category": "easy",
       "title": "The First Spark",
       "question": "You step into a freezing dark room with a single match. Inside are an oil lantern, a candle, and a fireplace. What must you light first?",
@@ -330,64 +444,23 @@
       ],
       "points": 100,
       "enabled": true,
-      "order": 3
-    },
-    {
-      "id": 4,
-      "category": "easy",
-      "title": "The Subtractive Word",
-      "question": "What five-letter word has \"one\" left when you take two letters away?",
-      "type": "text",
-      "acceptedAnswers": [
-        "stone",
-        "alone"
-      ],
-      "hints": [
-        "Look at the spelling of the word \"one\".",
-        "Remove the first two letters of a hard rock.",
-        "S-T-O-N-E without S-T leaves O-N-E."
-      ],
-      "points": 100,
-      "enabled": true,
-      "order": 4
-    },
-    {
-      "id": 5,
-      "category": "easy",
-      "title": "The Grandfather Clock",
-      "question": "A grandfather clock takes 6 seconds to strike 4 o'clock. How many seconds will it take to strike 8 o'clock?",
-      "type": "number",
-      "acceptedAnswers": [
-        "14",
-        "14 seconds",
-        "14s"
-      ],
-      "hints": [
-        "Between 4 strikes, there are 3 time intervals (6 ÷ 3 = 2 seconds per interval).",
-        "Count the number of intervals between 8 strikes.",
-        "8 strikes have 7 intervals: 7 × 2 seconds."
-      ],
-      "points": 100,
-      "enabled": true,
       "order": 5
     },
     {
       "id": 6,
       "category": "easy",
-      "title": "The Featherweight Challenge",
-      "question": "What is as light as a feather, yet even the world's strongest athlete cannot hold it for more than 5 minutes?",
-      "type": "text",
+      "title": "The Calendar Observation",
+      "question": "Some months have 31 days; others have 30 days. How many months in a year have 28 days?",
+      "type": "number",
       "acceptedAnswers": [
-        "breath",
-        "their breath",
-        "his breath",
-        "her breath",
-        "a breath"
+        "12",
+        "all 12",
+        "all of them"
       ],
       "hints": [
-        "You do it naturally thousands of times a day.",
-        "It is completely weightless air.",
-        "Try holding it right now!"
+        "Read carefully: having 28 days does not mean ONLY 28 days.",
+        "Does March have 28 days? Yes, and three more!",
+        "Every single month has at least 28 days."
       ],
       "points": 100,
       "enabled": true,
@@ -414,17 +487,19 @@
     {
       "id": 8,
       "category": "easy",
-      "title": "The River Crossing Choice",
-      "question": "A farmer needs to cross a river with a fox, a goose, and grain. If left alone, the fox eats the goose, and the goose eats the grain. Which item must he row across FIRST?",
+      "title": "The Silent Globetrotter",
+      "question": "What can travel all around the world while remaining trapped in a corner?",
       "type": "text",
       "acceptedAnswers": [
-        "goose",
-        "the goose"
+        "stamp",
+        "a stamp",
+        "postage stamp",
+        "a postage stamp"
       ],
       "hints": [
-        "Leaving the fox with grain is completely safe.",
-        "Neither the fox eats grain, nor grain eats fox.",
-        "Take the animal that eats grain and is eaten by the fox!"
+        "You see it on letters and postcards.",
+        "It gets stamped before travel.",
+        "It sticks to the corner of an envelope."
       ],
       "points": 100,
       "enabled": true,
@@ -433,18 +508,16 @@
     {
       "id": 9,
       "category": "easy",
-      "title": "The Calendar Observation",
-      "question": "Some months have 31 days; others have 30 days. How many months in a year have 28 days?",
+      "title": "The Doubling Chain",
+      "question": "What number logically comes next in this sequence: 2, 4, 8, 16, 32, ___?",
       "type": "number",
       "acceptedAnswers": [
-        "12",
-        "all 12",
-        "all of them"
+        "64"
       ],
       "hints": [
-        "Read carefully: having 28 days does not mean ONLY 28 days.",
-        "Does March have 28 days? Yes, and three more!",
-        "Every single month has at least 28 days."
+        "Notice the operation between each step.",
+        "Each number is multiplied by two.",
+        "32 doubled equals...?"
       ],
       "points": 100,
       "enabled": true,
@@ -453,17 +526,18 @@
     {
       "id": 10,
       "category": "easy",
-      "title": "The Counting Proverb",
-      "question": "If two is company, and three is a crowd, what are four and five?",
+      "title": "The Grandfather Clock",
+      "question": "A grandfather clock takes 6 seconds to strike 4 o'clock. How many seconds will it take to strike 8 o'clock?",
       "type": "number",
       "acceptedAnswers": [
-        "9",
-        "nine"
+        "14",
+        "14 seconds",
+        "14s"
       ],
       "hints": [
-        "Don't think in idioms; think in basic arithmetic!",
-        "What is the sum of four and five?",
-        "4 + 5 = ?"
+        "Between 4 strikes, there are 3 time intervals (6 ÷ 3 = 2 seconds per interval).",
+        "Count the number of intervals between 8 strikes.",
+        "8 strikes have 7 intervals: 7 × 2 seconds."
       ],
       "points": 100,
       "enabled": true,
@@ -631,8 +705,8 @@
       "id": 19,
       "category": "medium",
       "title": "The Lateral Match Equality",
-      "question": "In the matchstick equation \"6 + 4 = 4\", moving ONE matchstick transforms it into a true equation. If you move the vertical stick from the plus sign to the 6, what valid arithmetic equation results? (Format: X - Y = Z)",
-      "type": "text",
+      "question": "Move one matchstick in 6 + 4 = 4 to make a mathematically correct equation.",
+      "type": "matchstick",
       "acceptedAnswers": [
         "8 - 4 = 4",
         "8-4=4"
@@ -644,7 +718,23 @@
       ],
       "points": 150,
       "enabled": true,
-      "order": 19
+      "order": 19,
+      "matchstick": {
+        "challenges": {
+          "easy": {
+            "initial": "1+1=3",
+            "solution": "1+1=2"
+          },
+          "medium": {
+            "initial": "6+4=4",
+            "solution": "8-4=4"
+          },
+          "hard": {
+            "initial": "1+1=6",
+            "solution": "7-1=6"
+          }
+        }
+      }
     },
     {
       "id": 20,
@@ -865,6 +955,12 @@
     }
   ],
   "settings": {
+    "gameDuration": 1800,
+    "mediumThreshold": 500,
+    "hardThreshold": 1500,
+    "skipEnabled": true,
+    "skipPenalty": 0,
+    "hintsEnabled": true,
     "easyTimer": 90,
     "mediumTimer": 120,
     "hardTimer": 150,
@@ -951,7 +1047,93 @@
       "userId": "009ac504-3ea3-4e08-bddc-c76e033c1321",
       "role": "user",
       "expiresAt": 1793691862794
+    },
+    {
+      "token": "4cf5d62216246302770c858789a92c925cf9cbc140703b9c6e762eeb251006e1",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793720080104
+    },
+    {
+      "token": "4fc42896f44776f650cb1ae4655aa0a13e77d3582c005998e806ae1e28466503",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793720080451
+    },
+    {
+      "token": "069f5b68fcb6166ebe07e7c6aeea8b334df49ad68d5c379060cec2063f3da914",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793720196492
+    },
+    {
+      "token": "92c1035964d06b5eca9a2335c4185df394a3e4441d74912546afecac1921d2e4",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793720196822
+    },
+    {
+      "token": "8963d1e201e1898ae6cc3292540383e0ce0afa908eb6924f361cedccc7cef017",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793720410077
+    },
+    {
+      "token": "40191e53bca76c0516d5e844abb106f9cba4ea367d26eb2742ece20b4a85f1ed",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793720410567
+    },
+    {
+      "token": "c769cd524209681c390fc9d533fc551a8244616d93c99edb4b785e5a99e7415d",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793720528763
+    },
+    {
+      "token": "4c184e18f30a0a55532094d683eddfae7adb696f6451224ec256824dc87532c6",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793720529362
+    },
+    {
+      "token": "ed8f4e4184332f30f1024b0ac7ba4c53c34d97c6908710136644559bcea8aee2",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793720634523
+    },
+    {
+      "token": "b01ac299f3637dc644a075ee7351e79476ca3fc746eac16a406035adab01c5eb",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793720634978
+    },
+    {
+      "token": "8d3b9ef4d50062a3396004a2414830d3f301cc4b06109a3923494dd7ec8bd4c4",
+      "userId": "admin-seed-id",
+      "role": "admin",
+      "expiresAt": 1793720901420
     }
   ],
-  "passwordResets": []
+  "passwordResets": [
+    {
+      "id": "8f704036-2535-4512-b27b-712c04af343b",
+      "userId": "50e66e8e-95b0-4652-9e4c-a6fdc7611573",
+      "resetCodeHash": "a8fd80d94d94b2cacb3082e92df41a8df00289967c5d42689c940c00f992a1eb",
+      "requestedAt": "2026-10-27T15:40:10.086Z",
+      "expiresAt": 1793119210086,
+      "status": "used",
+      "usedAt": "2026-10-27T15:40:10.187Z"
+    },
+    {
+      "id": "fe99ac32-dbe5-4ff8-82b8-cbdc3835ba9b",
+      "userId": "5d09267d-9ddb-44ea-bf2d-4897fe75540e",
+      "resetCodeHash": "e282e9d8842861fca7c6b093cd649068ba85ff6285ecccb145361fc074294e87",
+      "requestedAt": "2026-10-27T15:42:08.775Z",
+      "expiresAt": 1793119328774,
+      "status": "used",
+      "usedAt": "2026-10-27T15:42:08.899Z"
+    }
+  ],
+  "gameSessions": []
 }

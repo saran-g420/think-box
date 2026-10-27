@@ -253,8 +253,15 @@ export const SEED_PUZZLES = [
     id: 19,
     category: 'medium',
     title: 'The Lateral Match Equality',
-    question: 'In the matchstick equation "6 + 4 = 4", moving ONE matchstick transforms it into a true equation. If you move the vertical stick from the plus sign to the 6, what valid arithmetic equation results? (Format: X - Y = Z)',
-    type: 'text',
+    question: 'Move one matchstick in 6 + 4 = 4 to make a mathematically correct equation.',
+    type: 'matchstick',
+    matchstick: {
+      challenges: {
+        easy: { initial: '1+1=3', solution: '1+1=2' },
+        medium: { initial: '6+4=4', solution: '8-4=4' },
+        hard: { initial: '1+1=6', solution: '7-1=6' }
+      }
+    },
     acceptedAnswers: ['8 - 4 = 4', '8-4=4'],
     hints: ['Removing the vertical stick from + leaves a minus sign -.', 'Placing that stick on 6 closes the upper right slot to form 8.', '8 minus 4 equals 4.'],
     points: 150,
@@ -418,6 +425,12 @@ const DEFAULT_DB = {
   ],
   puzzles: SEED_PUZZLES,
   settings: {
+    gameDuration: 1800,
+    mediumThreshold: 500,
+    hardThreshold: 1500,
+    skipEnabled: true,
+    skipPenalty: 0,
+    hintsEnabled: true,
     easyTimer: 90,
     mediumTimer: 120,
     hardTimer: 150,
@@ -433,6 +446,7 @@ const DEFAULT_DB = {
     rulesAnnouncement: 'Welcome to Think Outside the Box! Complete puzzles sequentially to unlock higher stages. Avoid hint penalties to maximize your tournament standing.'
   },
   sessions: [],
+  gameSessions: [],
   passwordResets: []
 };
 
@@ -456,9 +470,35 @@ class DocumentDatabase {
         this.data = JSON.parse(raw);
         if (!this.data.users) this.data.users = DEFAULT_DB.users;
         if (!this.data.puzzles || this.data.puzzles.length < 30) this.data.puzzles = DEFAULT_DB.puzzles;
-        if (!this.data.settings) this.data.settings = DEFAULT_DB.settings;
+        this.data.settings = { ...DEFAULT_DB.settings, ...(this.data.settings || {}) };
         if (!this.data.sessions) this.data.sessions = [];
+        if (!this.data.gameSessions) this.data.gameSessions = [];
         if (!this.data.passwordResets) this.data.passwordResets = [];
+        let migrated = false;
+        const usedCodes = new Set(this.data.users.map(user => user.gameCode).filter(Boolean));
+        for (const user of this.data.users) {
+          if (!user.playerId) { user.playerId = user.username; migrated = true; }
+          if (typeof user.collegeName !== 'string') { user.collegeName = ''; migrated = true; }
+          if (!Number.isFinite(user.correctAnswers)) { user.correctAnswers = (user.completedLevels || []).length; migrated = true; }
+          if (!Array.isArray(user.skippedLevels)) { user.skippedLevels = []; migrated = true; }
+          if (!Array.isArray(user.gameHistory)) { user.gameHistory = []; migrated = true; }
+          if (user.role !== 'admin' && !user.gameCode) {
+            let code;
+            do {
+              code = `TECH-${crypto.randomInt(10000, 100000)}`;
+            } while (usedCodes.has(code));
+            user.gameCode = code;
+            usedCodes.add(code);
+            migrated = true;
+          }
+        }
+        const matchstickPuzzle = this.data.puzzles.find(puzzle => puzzle.id === 19);
+        const seedMatchstick = SEED_PUZZLES.find(puzzle => puzzle.id === 19);
+        if (matchstickPuzzle && matchstickPuzzle.type !== 'matchstick') {
+          Object.assign(matchstickPuzzle, seedMatchstick);
+          migrated = true;
+        }
+        if (migrated) this.save();
       } else {
         this.data = JSON.parse(JSON.stringify(DEFAULT_DB));
         this.save();
@@ -563,6 +603,40 @@ class DocumentDatabase {
     return token;
   }
 
+  getActiveGameSession(userId) {
+    this.load();
+    return this.data.gameSessions.find(session => session.userId === userId && session.status === 'active') || null;
+  }
+
+  createGameSession(userId, durationSeconds) {
+    this.load();
+    const now = Date.now();
+    const session = {
+      id: crypto.randomUUID(),
+      userId,
+      startedAt: new Date(now).toISOString(),
+      expiresAt: now + durationSeconds * 1000,
+      status: 'active',
+      score: 0,
+      solvedLevels: [],
+      skippedPuzzleIds: [],
+      hintsUsed: {},
+      history: []
+    };
+    this.data.gameSessions.push(session);
+    this.save();
+    return session;
+  }
+
+  updateGameSession(id, updates) {
+    this.load();
+    const index = this.data.gameSessions.findIndex(session => session.id === id);
+    if (index < 0) return null;
+    this.data.gameSessions[index] = { ...this.data.gameSessions[index], ...updates };
+    this.save();
+    return this.data.gameSessions[index];
+  }
+
   getSession(token) {
     this.load();
     if (!token) return null;
@@ -588,12 +662,18 @@ class DocumentDatabase {
     this.load();
     this.data.users.forEach(u => {
       if (u.role !== 'admin') {
-        u.unlockedLevel = 1;
+        u.unlockedLevel = 30;
         u.totalScore = 0;
         u.completedLevels = [];
+        u.skippedLevels = [];
+        u.correctAnswers = 0;
         u.levelScores = {};
+        u.gameHistory = [];
       }
     });
+    this.data.gameSessions = this.data.gameSessions.map(session =>
+      session.status === 'active' ? { ...session, status: 'abandoned', finishedAt: new Date().toISOString() } : session
+    );
     this.save();
   }
 }

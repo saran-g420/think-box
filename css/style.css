@@ -955,3 +955,205 @@ button:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
+.account-code-card,
+.progression-card {
+  margin: 18px 0;
+  padding: 18px 22px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+}
+
+.account-code-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.account-code-card p,
+.progression-card p,
+.matchstick-instructions {
+  color: var(--text-secondary);
+  margin-top: 6px;
+  font-size: 0.88rem;
+}
+
+.account-code-card code {
+  color: var(--accent-cyan);
+  font: 800 1.15rem var(--font-mono);
+}
+
+.progression-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.progression-head span {
+  color: var(--accent-amber);
+}
+
+.progression-track {
+  height: 8px;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+}
+
+.progression-track > div {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-cyan), #a78bfa, var(--accent-amber));
+  transition: width 250ms ease;
+}
+
+.puzzle-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.matchstick-container {
+  padding: 20px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: rgba(10, 14, 24, 0.65);
+}
+
+#matchstick-board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  min-height: 100px;
+  margin: 16px 0 8px;
+  overflow-x: auto;
+}
+
+.match-glyph {
+  position: relative;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 76px;
+}
+
+.match-glyph.operator-glyph {
+  flex-basis: 38px;
+  width: 38px;
+}
+
+.match-glyph.equals-glyph {
+  flex-basis: 40px;
+  width: 40px;
+}
+
+.match-segment {
+  position: absolute;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.match-segment::after {
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: rgba(255,255,255,0.055);
+  content: "";
+}
+
+.match-segment.lit::after {
+  background: linear-gradient(90deg, #fbbf24, #fff1a8 50%, #f59e0b);
+  box-shadow: 0 0 9px rgba(245, 158, 11, 0.5);
+}
+
+.match-segment.selected::after {
+  background: #fb7185;
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.8);
+}
+
+.seg-a, .seg-g, .seg-d, .seg-h, .seg-t, .seg-u {
+  width: 30px;
+  height: 8px;
+}
+.seg-a { top: 0; left: 9px; }
+.seg-g { top: 34px; left: 9px; }
+.seg-d { bottom: 0; left: 9px; }
+.seg-f, .seg-e, .seg-b, .seg-c, .seg-v {
+  width: 8px;
+  height: 29px;
+}
+.seg-f { top: 5px; left: 2px; }
+.seg-b { top: 5px; right: 2px; }
+.seg-e { bottom: 5px; left: 2px; }
+.seg-c { bottom: 5px; right: 2px; }
+.operator-glyph .seg-h { top: 34px; left: 4px; width: 30px; }
+.operator-glyph .seg-v { top: 23px; left: 15px; height: 30px; }
+.equals-glyph .seg-t { top: 22px; left: 5px; width: 30px; }
+.equals-glyph .seg-u { top: 46px; left: 5px; width: 30px; }
+
+.matchstick-live-equation {
+  min-height: 1.4em;
+  color: var(--accent-cyan);
+  text-align: center;
+  font: 700 1rem var(--font-mono);
+}
+
+.gameover-card {
+  max-width: 680px;
+  margin: 6vh auto;
+  text-align: center;
+  align-items: center;
+}
+
+.gameover-card h2 {
+  font-size: 2rem;
+}
+
+.gameover-card > p {
+  color: var(--text-secondary);
+}
+
+.gameover-results {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.gameover-results > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.04);
+}
+
+.gameover-results span {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+.gameover-results strong {
+  color: var(--accent-amber);
+  font-size: 1.3rem;
+}
+
+@media (max-width: 560px) {
+  .account-code-card { align-items: flex-start; flex-direction: column; }
+  .gameover-results { grid-template-columns: 1fr; }
+  #matchstick-board { justify-content: flex-start; }
+  .arena-meta-box { flex-wrap: wrap; }
+}

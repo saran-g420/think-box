@@ -2,7 +2,7 @@
  * Direct Milestone Greeting Trigger Test
  */
 
-const BASE = 'http://127.0.0.1:3000';
+const BASE = process.env.TEST_BASE || 'http://127.0.0.1:3000';
 
 async function testMilestones() {
   console.log('Testing milestone greetings for Level 10, 20, and 30...');
@@ -65,6 +65,12 @@ async function testMilestones() {
   }
 
   console.log('All 3 milestone greetings verified with 100% precision!');
+  db.getUsers();
+  db.data.users = db.data.users.filter(existingUser => existingUser.id !== user.id);
+  db.data.sessions = db.data.sessions.filter(session => session.userId !== user.id);
+  db.data.gameSessions = db.data.gameSessions.filter(session => session.userId !== user.id);
+  db.data.passwordResets = db.data.passwordResets.filter(reset => reset.userId !== user.id);
+  db.save();
 }
 
 testMilestones().catch(console.error);

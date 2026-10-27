@@ -6,6 +6,12 @@
 import { sound } from './sound.js';
 import { confetti } from './confetti.js';
 
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char]);
+}
+
 class App {
   constructor() {
     this.token = localStorage.getItem('totb_token') || null;
@@ -18,6 +24,10 @@ class App {
     this.timerInterval = null;
     this.timeRemaining = 0;
     this.hintsUsed = 0;
+    this.gameSession = null;
+    this.matchstickState = null;
+    this.matchstickSelected = null;
+    this.matchstickDifficulty = 'medium';
 
     this.init();
   }
@@ -42,7 +52,10 @@ class App {
       const res = await fetch(endpoint, { ...options, headers });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Request failed');
+        const error = new Error(data.error || 'Request failed');
+        error.status = res.status;
+        error.data = data;
+        throw error;
       }
       return data;
     } catch (err) {
@@ -204,12 +217,13 @@ class App {
       e.preventDefault();
       sound.click();
       const usernameOrEmail = document.getElementById('login-username').value;
+      const gameCode = document.getElementById('login-game-code').value;
       const password = document.getElementById('login-password').value;
 
       try {
         const res = await this.api('/api/auth/login', {
           method: 'POST',
-          body: JSON.stringify({ usernameOrEmail, password })
+          body: JSON.stringify({ usernameOrEmail, gameCode, password })
         });
         this.token = res.token;
         this.user = res.user;
@@ -233,19 +247,20 @@ class App {
       const fullName = document.getElementById('reg-fullname').value;
       const username = document.getElementById('reg-username').value;
       const email = document.getElementById('reg-email').value;
+      const collegeName = document.getElementById('reg-college').value;
       const password = document.getElementById('reg-password').value;
       const confirmPassword = document.getElementById('reg-confirm-password').value;
 
       try {
         const res = await this.api('/api/auth/register', {
           method: 'POST',
-          body: JSON.stringify({ fullName, username, email, password, confirmPassword })
+          body: JSON.stringify({ fullName, playerId: username, username, email, collegeName, password, confirmPassword })
         });
         this.token = res.token;
         this.user = res.user;
         localStorage.setItem('totb_token', this.token);
         document.getElementById('modal-auth').classList.remove('active');
-        this.toast('Account registered! Starting Level 1.', 'success');
+        this.toast(`Account registered. Your game code is ${this.user.gameCode}. Save it for future sign-ins.`, 'success');
         this.updateNavUser();
         this.showView('dashboard');
       } catch (err) {}
@@ -271,6 +286,19 @@ class App {
       document.getElementById('modal-forgot-password').classList.remove('active');
       this.toast('Reset request submitted to the administrator.', 'info');
     };
+    document.getElementById('btn-complete-password-reset').onclick = async () => {
+      const resetCode = document.getElementById('forgot-reset-code').value.trim();
+      const newPassword = document.getElementById('forgot-new-password').value;
+      const confirmPassword = document.getElementById('forgot-confirm-password').value;
+      try {
+        await this.api('/api/auth/reset-password', {
+          method: 'POST',
+          body: JSON.stringify({ resetCode, newPassword, confirmPassword })
+        });
+        document.getElementById('modal-forgot-password').classList.remove('active');
+        this.toast('Password reset. Sign in with your new password and TECH game code.', 'success');
+      } catch {}
+    };
 
     // Force Change Password Submit
     document.getElementById('btn-submit-force-pw').onclick = async () => {
@@ -291,7 +319,7 @@ class App {
     // Dashboard Continue Button
     document.getElementById('btn-dash-continue').onclick = () => {
       sound.click();
-      const currentLevel = this.user ? this.user.unlockedLevel : 1;
+      const currentLevel = this.puzzles.find(puzzle => !puzzle.isCompleted)?.id || 1;
       this.openPuzzle(currentLevel);
     };
 
@@ -320,6 +348,10 @@ class App {
       }
     };
     document.getElementById('btn-arena-hint').onclick = () => this.revealHint();
+    document.getElementById('btn-arena-skip').onclick = () => this.skipPuzzle();
+    document.getElementById('btn-matchstick-submit').onclick = () => this.submitAnswer();
+    document.getElementById('btn-gameover-dashboard').onclick = () => this.showView('dashboard');
+    document.getElementById('btn-gameover-leaderboard').onclick = () => this.showView('scoreboard');
 
     // Milestone Modal Action Buttons
     document.getElementById('btn-continue-to-medium').onclick = () => {
@@ -392,11 +424,33 @@ class App {
     document.getElementById('dash-greeting').textContent = `Welcome back, ${this.user.fullName}!`;
     document.getElementById('stat-total-score').textContent = `${this.user.totalScore || 0} pts`;
     document.getElementById('stat-completed-count').textContent = `${(this.user.completedLevels || []).length} / 30`;
-    document.getElementById('stat-unlocked-level').textContent = `Level ${this.user.unlockedLevel}`;
+    const progress = data.progress || this.user.progress || { mediumThreshold: 500, hardThreshold: 1500 };
+    const points = this.user.totalScore || 0;
+    const difficulty = points >= progress.hardThreshold ? 'Hard milestone earned'
+      : points >= progress.mediumThreshold ? 'Medium milestone earned' : 'Easy';
+    document.getElementById('stat-unlocked-level').textContent = difficulty;
     const pct = Math.round(((this.user.completedLevels || []).length / 30) * 100);
     document.getElementById('stat-progress-pct').textContent = `${pct}%`;
 
-    const nextLvl = this.user.unlockedLevel;
+    const gameCodeEl = document.getElementById('player-game-code');
+    gameCodeEl.textContent = this.user.gameCode || 'Administrator';
+    const progressionStatus = document.getElementById('progression-status');
+    progressionStatus.textContent = `${points} points • Medium ${points >= progress.mediumThreshold ? 'earned' : 'not yet earned'} • Hard ${points >= progress.hardThreshold ? 'earned' : 'not yet earned'}`;
+    const barPct = points < progress.mediumThreshold
+      ? Math.min(100, Math.round((points / Math.max(progress.mediumThreshold, 1)) * 100))
+      : points < progress.hardThreshold
+        ? Math.min(100, Math.round(((points - progress.mediumThreshold) / Math.max(progress.hardThreshold - progress.mediumThreshold, 1)) * 100))
+        : 100;
+    document.getElementById('progression-bar').style.width = `${barPct}%`;
+    const pointsNeeded = points < progress.mediumThreshold
+      ? progress.mediumThreshold - points
+      : points < progress.hardThreshold ? progress.hardThreshold - points : 0;
+    document.getElementById('progression-message').textContent = pointsNeeded
+      ? `Earn ${pointsNeeded} more points toward the next difficulty milestone. All puzzles remain playable.`
+      : 'You have earned every difficulty milestone. All puzzles remain playable.';
+
+    const nextPuzzle = this.puzzles.find(puzzle => !puzzle.isCompleted);
+    const nextLvl = nextPuzzle?.id || 1;
     document.getElementById('btn-dash-continue').innerHTML = `<span>▶</span> Continue Level ${nextLvl}`;
 
     this.renderDashboardGrid('all');
@@ -420,15 +474,12 @@ class App {
     }
 
     grid.innerHTML = filtered.map(p => {
-      const isLocked = !p.isUnlocked;
       const isCompleted = p.isCompleted;
-      const isCurrent = p.id === this.user.unlockedLevel;
+      const isCurrent = this.puzzles.find(puzzle => !puzzle.isCompleted)?.id === p.id;
 
-      let statusBadge = '<span class="tile-badge" style="background: rgba(255,255,255,0.06); color: var(--text-muted);">🔒 Locked</span>';
+      let statusBadge = '<span class="tile-badge" style="background: rgba(139,92,246,0.2); color: #c4b5fd;">Play</span>';
       if (isCompleted) {
         statusBadge = '<span class="tile-badge" style="background: rgba(16,185,129,0.2); color: #6ee7b7;">✓ Done</span>';
-      } else if (!isLocked) {
-        statusBadge = '<span class="tile-badge" style="background: rgba(139,92,246,0.2); color: #c4b5fd;">Play</span>';
       }
 
       let diffColor = 'var(--accent-cyan)';
@@ -436,12 +487,12 @@ class App {
       if (p.category === 'hard') diffColor = 'var(--accent-rose)';
 
       return `
-        <div class="level-tile ${isLocked ? 'locked' : ''} ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current-active' : ''}" data-lvl="${p.id}">
+        <div class="level-tile ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current-active' : ''}" data-lvl="${p.id}">
           <div class="tile-top">
             <span class="tile-number">Level ${p.id}</span>
             ${statusBadge}
           </div>
-          <div class="tile-title">${p.title}</div>
+          <div class="tile-title">${escapeHtml(p.title)}</div>
           <div class="tile-footer">
             <span style="color: ${diffColor}; font-weight: 700; text-transform: uppercase;">${p.category}</span>
             <span style="font-weight: 700; color: var(--accent-amber);">${isCompleted ? `★ ${p.score} pts` : `★ ${p.points} pts`}</span>
@@ -454,14 +505,8 @@ class App {
     grid.querySelectorAll('.level-tile').forEach(tile => {
       tile.onclick = (e) => {
         const id = parseInt(e.currentTarget.getAttribute('data-lvl'));
-        if (id > this.user.unlockedLevel) {
-          sound.error();
-          // Exact required prompt requirement
-          this.toast('Complete the previous level to unlock this level.', 'error');
-        } else {
-          sound.click();
-          this.openPuzzle(id);
-        }
+        sound.click();
+        this.openPuzzle(id);
       };
     });
   }
@@ -472,16 +517,25 @@ class App {
 
   async openPuzzle(levelId) {
     try {
+      const sessionData = await this.api('/api/game/start', { method: 'POST', body: JSON.stringify({}) });
+      this.gameSession = sessionData.session;
+      if (sessionData.gameOver || sessionData.session?.status !== 'active') {
+        return this.showGameOver(sessionData.session);
+      }
       const data = await this.api(`/api/puzzles/${levelId}`);
       this.activePuzzle = data.puzzle;
       this.hintsUsed = 0;
-      this.timeRemaining = this.activePuzzle.timeLimit || 90;
+      this.gameSession = data.session;
+      this.timeRemaining = data.session.remainingSeconds;
 
       this.showView('arena');
       this.renderArena();
       this.startTimer();
     } catch (err) {
-      // Forbidden error handled by toast in this.api()
+      if (err.status === 410 || err.data?.gameOver) {
+        const status = await this.api('/api/game/status');
+        this.showGameOver(status.session);
+      }
     }
   }
 
@@ -492,17 +546,24 @@ class App {
     document.getElementById('arena-category-badge').textContent = `${catUpper} MODE • LEVEL ${p.id}`;
     document.getElementById('arena-puzzle-title').textContent = p.title;
     document.getElementById('arena-points-chip').textContent = `★ ${p.points} pts`;
+    document.getElementById('arena-session-score').textContent = `Session: ${this.gameSession?.score || 0} pts`;
     document.getElementById('arena-question-text').textContent = p.question;
 
     const input = document.getElementById('arena-answer-input');
     input.value = '';
-    input.focus();
+    const matchstickPuzzle = p.type === 'matchstick';
+    document.getElementById('matchstick-container').style.display = matchstickPuzzle ? 'block' : 'none';
+    document.getElementById('text-answer-zone').style.display = matchstickPuzzle ? 'none' : 'flex';
+    document.getElementById('btn-matchstick-submit').style.display = matchstickPuzzle ? 'inline-flex' : 'none';
+    document.getElementById('btn-arena-skip').style.display = this.settings.skipEnabled === false ? 'none' : 'inline-flex';
+    if (matchstickPuzzle) this.renderMatchstickBoard(p.matchstick?.challenges || {}, p.category);
+    else input.focus();
 
     // Hints Reset
     const hintsCont = document.getElementById('arena-hints-container');
     hintsCont.innerHTML = '';
     const hintBtn = document.getElementById('btn-arena-hint');
-    if (p.hints && p.hints.length > 0) {
+    if (p.hintsEnabled && p.hints && p.hints.length > 0) {
       hintBtn.style.display = 'inline-flex';
       hintBtn.textContent = `💡 Reveal Hint (1/${p.hints.length})`;
     } else {
@@ -510,28 +571,103 @@ class App {
     }
   }
 
-  revealHint() {
+  async revealHint() {
     const p = this.activePuzzle;
     if (!p || !p.hints || this.hintsUsed >= p.hints.length) return;
 
-    sound.hint();
-    const hintText = p.hints[this.hintsUsed];
-    this.hintsUsed++;
+    try {
+      const data = await this.api(`/api/puzzles/${p.id}/hint`, { method: 'POST', body: JSON.stringify({}) });
+      sound.hint();
+      this.hintsUsed = data.hintsUsed;
 
-    const hintsCont = document.getElementById('arena-hints-container');
-    const hintEl = document.createElement('div');
-    hintEl.className = 'hint-pill';
-    hintEl.innerHTML = `<strong>Hint ${this.hintsUsed}:</strong> ${hintText}`;
-    hintsCont.appendChild(hintEl);
+      const hintsCont = document.getElementById('arena-hints-container');
+      const hintEl = document.createElement('div');
+      hintEl.className = 'hint-pill';
+      hintEl.textContent = `Hint ${this.hintsUsed}: ${data.hint}`;
+      hintsCont.appendChild(hintEl);
 
-    const hintBtn = document.getElementById('btn-arena-hint');
-    if (this.hintsUsed >= p.hints.length) {
-      hintBtn.style.display = 'none';
-    } else {
-      hintBtn.textContent = `💡 Reveal Hint (${this.hintsUsed + 1}/${p.hints.length})`;
+      const hintBtn = document.getElementById('btn-arena-hint');
+      if (data.remainingHints <= 0) hintBtn.style.display = 'none';
+      else hintBtn.textContent = `💡 Reveal Hint (${this.hintsUsed + 1}/${p.hints.length})`;
+
+      this.toast(`Hint ${this.hintsUsed} revealed (-${data.hintPenalty} pts penalty).`, 'info');
+    } catch (error) {
+      if (error.status === 410 || error.data?.gameOver) this.expireGame();
     }
+  }
 
-    this.toast(`Hint ${this.hintsUsed} revealed (-15 pts penalty).`, 'info');
+  renderMatchstickBoard(challenges, preferredDifficulty) {
+    const patterns = {
+      '0': 'abcdef', '1': 'bc', '2': 'abged', '3': 'abgcd', '4': 'fgbc',
+      '5': 'afgcd', '6': 'afgecd', '7': 'abc', '8': 'abcdefg', '9': 'abfgcd',
+      '+': 'hv', '-': 'h', '=': 'tu'
+    };
+    this.matchstickDifficulty = challenges[preferredDifficulty] ? preferredDifficulty : Object.keys(challenges)[0];
+    this.currentMatchstickChallenge = challenges[this.matchstickDifficulty];
+    const difficultyPicker = document.getElementById('matchstick-difficulty');
+    difficultyPicker.innerHTML = Object.keys(challenges).map(difficulty =>
+      `<button type="button" class="cat-tab ${difficulty === this.matchstickDifficulty ? 'active' : ''}" data-difficulty="${escapeHtml(difficulty)}">${escapeHtml(difficulty)}</button>`
+    ).join('');
+    difficultyPicker.querySelectorAll('button').forEach(button => {
+      button.onclick = () => {
+        this.matchstickDifficulty = button.dataset.difficulty;
+        this.currentMatchstickChallenge = challenges[this.matchstickDifficulty];
+        difficultyPicker.querySelectorAll('button').forEach(tab => tab.classList.toggle('active', tab === button));
+        this.renderMatchstickBoard(challenges, this.matchstickDifficulty);
+      };
+    });
+    this.matchstickState = this.currentMatchstickChallenge.initial.split('').map(char => new Set(patterns[char] || ''));
+    this.matchstickSelected = null;
+    this.matchstickPatterns = patterns;
+    this.drawMatchstickBoard();
+  }
+
+  drawMatchstickBoard() {
+    const board = document.getElementById('matchstick-board');
+    const glyphs = this.currentMatchstickChallenge.initial.split('');
+    board.innerHTML = glyphs.map((char, glyphIndex) => {
+      const allowedSegments = char === '+' || char === '-' ? ['h', 'v']
+        : char === '=' ? ['t', 'u'] : ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+      return `<div class="match-glyph ${char === '+' || char === '-' ? 'operator-glyph' : ''} ${char === '=' ? 'equals-glyph' : ''}" aria-label="Equation symbol ${char}">
+        ${allowedSegments.map(segment => {
+          const lit = this.matchstickState[glyphIndex].has(segment);
+          const selected = this.matchstickSelected?.glyphIndex === glyphIndex && this.matchstickSelected.segment === segment;
+          return `<button type="button" class="match-segment seg-${segment} ${lit ? 'lit' : ''} ${selected ? 'selected' : ''}" data-glyph="${glyphIndex}" data-segment="${segment}" aria-label="${lit ? 'Move matchstick' : 'Empty segment'}"></button>`;
+        }).join('')}
+      </div>`;
+    }).join('');
+    board.querySelectorAll('.match-segment').forEach(button => {
+      button.onclick = () => this.moveMatchstick(Number(button.dataset.glyph), button.dataset.segment);
+    });
+    const equation = this.matchstickState.map((segments, index) => {
+      const original = glyphs[index];
+      if (original === '+') return segments.has('v') ? '+' : '-';
+      if (original === '-') return segments.has('v') ? '?' : '-';
+      if (original === '=') return '=';
+      return Object.entries(this.matchstickPatterns).find(([digit, pattern]) =>
+        /^\d$/.test(digit) && pattern.length === segments.size && [...pattern].every(segment => segments.has(segment))
+      )?.[0] || '?';
+    }).join('');
+    this.matchstickAnswer = equation;
+    document.getElementById('matchstick-live-equation').textContent = `Current equation: ${equation.replace(/(.)(?=.)/g, '$1 ')}`;
+  }
+
+  moveMatchstick(glyphIndex, segment) {
+    const segments = this.matchstickState[glyphIndex];
+    if (this.matchstickSelected) {
+      if (segments.has(segment)) return;
+      segments.add(segment);
+      this.matchstickSelected = null;
+      this.drawMatchstickBoard();
+      return;
+    }
+    if (!segments.has(segment)) {
+      this.toast('Select a lit matchstick before choosing an empty segment.', 'info');
+      return;
+    }
+    segments.delete(segment);
+    this.matchstickSelected = { glyphIndex, segment };
+    this.drawMatchstickBoard();
   }
 
   startTimer() {
@@ -543,11 +679,10 @@ class App {
       this.updateTimerDisplay();
 
       if (this.timeRemaining <= 0) {
-        this.stopTimer();
-        sound.error();
-        this.toast('Time is up for this round! You can still submit or retry.', 'error');
+        this.expireGame();
       }
     }, 1000);
+    this.timerSyncInterval = setInterval(() => this.syncGameTimer(), 10000);
   }
 
   stopTimer() {
@@ -555,6 +690,46 @@ class App {
       clearInterval(this.timerInterval);
       this.timerInterval = null;
     }
+    if (this.timerSyncInterval) {
+      clearInterval(this.timerSyncInterval);
+      this.timerSyncInterval = null;
+    }
+  }
+
+  async syncGameTimer() {
+    try {
+      const data = await this.api('/api/game/status');
+      if (data.gameOver) return this.showGameOver(data.session);
+      if (data.session?.status === 'active') {
+        this.timeRemaining = data.session.remainingSeconds;
+        this.gameSession = data.session;
+        this.updateTimerDisplay();
+      }
+    } catch (error) {
+      if (error.status === 410 || error.data?.gameOver) this.expireGame();
+    }
+  }
+
+  async expireGame() {
+    if (this._expiringGame) return;
+    this._expiringGame = true;
+    this.stopTimer();
+    sound.error();
+    try {
+      const data = await this.api('/api/game/status');
+      this.showGameOver(data.session);
+    } finally {
+      this._expiringGame = false;
+    }
+  }
+
+  showGameOver(session) {
+    this.stopTimer();
+    document.getElementById('gameover-score').textContent = `${session?.totalScore ?? this.user?.totalScore ?? 0} pts`;
+    document.getElementById('gameover-solved').textContent = session?.solvedCount ?? 0;
+    document.getElementById('gameover-levels').textContent = (session?.completedLevels || this.user?.completedLevels || []).length;
+    this.showView('gameover');
+    this.toast('Game time has ended. Your final results were saved.', 'info');
   }
 
   updateTimerDisplay() {
@@ -571,7 +746,9 @@ class App {
   }
 
   async submitAnswer() {
-    const answer = document.getElementById('arena-answer-input').value.trim();
+    const answer = this.activePuzzle?.type === 'matchstick'
+      ? this.matchstickAnswer
+      : document.getElementById('arena-answer-input').value.trim();
     if (!answer) return this.toast('Please type an answer first!', 'error');
 
     this.stopTimer();
@@ -581,8 +758,7 @@ class App {
         method: 'POST',
         body: JSON.stringify({
           answer,
-          hintsUsed: this.hintsUsed,
-          timeRemaining: this.timeRemaining
+          ...(this.activePuzzle?.type === 'matchstick' ? { difficulty: this.matchstickDifficulty } : {})
         })
       });
 
@@ -596,13 +772,23 @@ class App {
       // SUCCESS!
       sound.success();
       confetti.fire(110);
-      this.toast(`Solved! +${res.earnedScore} points added to your score!`, 'success');
+      this.toast(res.earnedScore
+        ? `Solved! +${res.earnedScore} points added to your score!`
+        : 'Correct! You already earned points for this puzzle; replay gives no extra points.', 'success');
 
       // Update local state
+      const previousPoints = this.user.totalScore || 0;
       this.user.unlockedLevel = res.unlockedLevel;
       this.user.totalScore = res.totalScore;
       this.user.completedLevels = res.completedLevels;
+      this.user.correctAnswers = res.correctAnswers;
+      this.gameSession = res.session;
+      document.getElementById('arena-session-score').textContent = `Session: ${res.session?.score || 0} pts`;
       this.updateNavUser();
+      if (res.session?.status === 'active') this.startTimer();
+      else this.stopTimer();
+      if (res.progress?.mediumUnlocked && previousPoints < res.progress.mediumThreshold) this.toast('Medium difficulty milestone earned!', 'success');
+      if (res.progress?.hardUnlocked && previousPoints < res.progress.hardThreshold) this.toast('Hard difficulty milestone earned!', 'success');
 
       // Check Category Milestones exactly per prompt requirements:
       if (res.milestone === 'easy') {
@@ -628,7 +814,29 @@ class App {
         setTimeout(() => this.showView('dashboard'), 1200);
       }
     } catch (e) {
-      this.startTimer();
+      if (e.status === 410 || e.data?.gameOver) this.expireGame();
+      else this.syncGameTimer().then(() => {
+        if (this.timeRemaining > 0) this.startTimer();
+      });
+    }
+  }
+
+  async skipPuzzle() {
+    if (!this.activePuzzle) return;
+    const currentId = this.activePuzzle.id;
+    this.stopTimer();
+    try {
+      const data = await this.api(`/api/puzzles/${currentId}/skip`, { method: 'POST', body: JSON.stringify({}) });
+      this.user.totalScore = data.totalScore;
+      this.gameSession = data.session;
+      document.getElementById('arena-session-score').textContent = `Session: ${data.session?.score || 0} pts`;
+      this.updateNavUser();
+      this.toast(data.penalty ? `Skipped. ${data.penalty} point penalty applied.` : 'Skipped. No points awarded.', 'info');
+      if (data.nextLevel) this.openPuzzle(data.nextLevel);
+      else this.showView('dashboard');
+    } catch (error) {
+      if (error.status === 410 || error.data?.gameOver) this.expireGame();
+      else this.startTimer();
     }
   }
 
@@ -649,8 +857,8 @@ class App {
       podium.innerHTML = top3.map((player, i) => `
         <div class="podium-card rank-${i + 1}">
           <div class="podium-badge">${medals[i]}</div>
-          <div class="podium-name">${player.fullName}</div>
-          <div style="font-size: 0.82rem; color: var(--text-muted);">@${player.username}</div>
+          <div class="podium-name">${escapeHtml(player.fullName)}</div>
+          <div style="font-size: 0.82rem; color: var(--text-muted);">${escapeHtml(player.gameCode || player.username)}</div>
           <div class="podium-score">${player.totalScore} pts</div>
           <div style="font-size: 0.78rem; color: #6ee7b7; font-weight: 700; margin-top: 4px;">
             ${player.completedCount} / 30 Levels
@@ -664,11 +872,14 @@ class App {
         <tr class="${p.isCurrentPlayer ? 'current-user-row' : ''}">
           <td style="font-weight: 800;">${p.rank <= 3 ? medals[p.rank - 1] : `#${p.rank}`}</td>
           <td>
-            <div style="font-weight: 700;">${p.fullName}</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">@${p.username}</div>
+            <div style="font-weight: 700;">${escapeHtml(p.fullName)}</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">${escapeHtml(p.playerId || p.username)}</div>
           </td>
+          <td>${escapeHtml(p.gameCode || '—')}</td>
           <td style="font-weight: 800; color: var(--accent-amber);">${p.totalScore}</td>
           <td>${p.completedCount} / 30</td>
+          <td>${p.correctAnswers}</td>
+          <td>${p.highestLevel}</td>
           <td>
             <div style="display: flex; align-items: center; gap: 8px;">
               <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; width: 80px;">
@@ -712,7 +923,13 @@ class App {
       document.getElementById('setting-easy-timer').value = s.easyTimer || 90;
       document.getElementById('setting-medium-timer').value = s.mediumTimer || 120;
       document.getElementById('setting-hard-timer').value = s.hardTimer || 150;
-      document.getElementById('setting-hint-penalty').value = s.hintPenalty || 15;
+      document.getElementById('setting-game-duration').value = s.gameDuration || 1800;
+      document.getElementById('setting-medium-threshold').value = s.mediumThreshold ?? 500;
+      document.getElementById('setting-hard-threshold').value = s.hardThreshold ?? 1500;
+      document.getElementById('setting-skip-penalty').value = s.skipPenalty ?? 0;
+      document.getElementById('setting-skip-enabled').checked = s.skipEnabled !== false;
+      document.getElementById('setting-hints-enabled').checked = s.hintsEnabled !== false;
+      document.getElementById('setting-hint-penalty').value = s.hintPenalty ?? 15;
       document.getElementById('setting-announcement').value = s.rulesAnnouncement || '';
 
       // 5. Admin Scoreboard
@@ -726,31 +943,61 @@ class App {
     tbody.innerHTML = (data.users || []).map(u => `
       <tr>
         <td>
-          <strong>${u.fullName}</strong>
-          <div style="font-size: 0.75rem; color: var(--text-muted);">@${u.username}</div>
+          <strong>${escapeHtml(u.fullName)}</strong>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">ID: ${escapeHtml(u.playerId)}</div>
+          <div style="font-size: 0.75rem; color: var(--accent-cyan);">${escapeHtml(u.gameCode)}</div>
         </td>
-        <td>${u.email}</td>
+        <td>${escapeHtml(u.collegeName || '—')}<div style="font-size: 0.75rem; color: var(--text-muted);">${new Date(u.createdAt).toLocaleString()}</div></td>
+        <td>${escapeHtml(u.email)}</td>
         <td>
           <span class="tile-badge" style="background: ${u.status === 'active' ? 'rgba(16,185,129,0.2)' : 'rgba(244,63,94,0.2)'}; color: ${u.status === 'active' ? '#6ee7b7' : '#fda4af'};">
             ${u.status}
           </span>
+          ${u.passwordResetRequested ? '<div style="font-size:0.72rem;color:var(--accent-amber);">Reset requested</div>' : ''}
         </td>
-        <td>Level ${u.unlockedLevel} (${u.completedCount}/30)</td>
-        <td style="color: var(--accent-amber); font-weight: 700;">${u.totalScore}</td>
+        <td>${escapeHtml(u.currentDifficulty)} • Highest ${u.highestLevel} (${u.completedCount}/30)
+          <div style="font-size: 0.72rem;">Completed: ${escapeHtml((u.completedLevels || []).join(', ') || 'none')}</div>
+          <div style="font-size: 0.75rem;">${u.activeSession ? `${Math.floor(u.activeSession.remainingSeconds / 60)}m ${u.activeSession.remainingSeconds % 60}s left` : escapeHtml(u.gameStatus)}</div>
+        </td>
+        <td style="color: var(--accent-amber); font-weight: 700;">${u.totalScore} pts<div style="font-size: 0.75rem;">${u.correctAnswers} solved</div></td>
         <td>
           <div style="display: flex; gap: 6px;">
-            <button class="btn-secondary btn-action-reset-pw" data-id="${u.id}" style="padding: 4px 8px; font-size: 0.75rem;" title="Assign temporary password">Reset PW</button>
-            <button class="btn-danger btn-action-reset-prog" data-id="${u.id}" style="padding: 4px 8px; font-size: 0.75rem;" title="Reset progress to level 1">Reset</button>
+            <button class="btn-secondary btn-action-status" data-id="${escapeHtml(u.id)}" data-status="${u.status}" style="padding: 4px 8px; font-size: 0.75rem;">${u.status === 'active' ? 'Disable' : 'Enable'}</button>
+            <button class="btn-secondary btn-action-history" data-id="${escapeHtml(u.id)}" style="padding: 4px 8px; font-size: 0.75rem;">History</button>
+            <button class="btn-secondary btn-action-reset-pw" data-id="${escapeHtml(u.id)}" style="padding: 4px 8px; font-size: 0.75rem;" title="Issue a one-time password reset code">Reset PW</button>
+            <button class="btn-danger btn-action-reset-prog" data-id="${escapeHtml(u.id)}" style="padding: 4px 8px; font-size: 0.75rem;" title="Reset progress">Reset</button>
           </div>
         </td>
       </tr>
     `).join('');
 
+    tbody.querySelectorAll('.btn-action-status').forEach(btn => {
+      btn.onclick = async (e) => {
+        const target = e.currentTarget;
+        const id = target.getAttribute('data-id');
+        const status = target.getAttribute('data-status') === 'active' ? 'inactive' : 'active';
+        await this.api(`/api/admin/users/${id}/status`, { method: 'POST', body: JSON.stringify({ status }) });
+        this.toast(`Player account ${status === 'active' ? 'enabled' : 'disabled'}.`, 'success');
+        this.loadAdminUsers(document.getElementById('admin-user-search').value.trim());
+      };
+    });
+
+    tbody.querySelectorAll('.btn-action-history').forEach(btn => {
+      btn.onclick = (e) => {
+        const player = data.users.find(user => user.id === e.currentTarget.getAttribute('data-id'));
+        const history = (player?.gameHistory || []).map(game =>
+          `${new Date(game.startedAt).toLocaleString()} — ${game.status}, ${game.score} points, ${game.solvedCount} solved, ${game.skippedCount} skipped`
+          + (game.puzzles?.length ? `\n  ${game.puzzles.map(puzzle => `#${puzzle.puzzleId} ${puzzle.action} (+${puzzle.earnedScore || 0})`).join(', ')}` : '')
+        ).join('\n');
+        alert(history || 'No game history recorded.');
+      };
+    });
+
     tbody.querySelectorAll('.btn-action-reset-pw').forEach(btn => {
       btn.onclick = async (e) => {
         const id = e.currentTarget.getAttribute('data-id');
         const res = await this.api(`/api/admin/users/${id}/reset-password`, { method: 'POST', body: JSON.stringify({}) });
-        alert(res.message);
+        alert(`${res.message}\n\nOne-time reset code:\n${res.resetCode}\n\nShare this code securely with the player.`);
       };
     });
 
@@ -773,7 +1020,7 @@ class App {
       <tr>
         <td style="font-weight: 800;">#${p.id}</td>
         <td style="text-transform: uppercase; font-size: 0.75rem; font-weight: 700;">${p.category}</td>
-        <td><strong>${p.title}</strong></td>
+        <td><strong>${escapeHtml(p.title)}</strong></td>
         <td>${p.points} pts</td>
         <td>
           <span class="tile-badge" style="background: ${p.enabled ? 'rgba(16,185,129,0.2)' : 'rgba(244,63,94,0.2)'}; color: ${p.enabled ? '#6ee7b7' : '#fda4af'};">
@@ -813,7 +1060,7 @@ class App {
     tbody.innerHTML = (data.leaderboard || []).map(p => `
       <tr>
         <td style="font-weight: 800;">#${p.rank}</td>
-        <td>${p.fullName} (@${p.username})</td>
+        <td>${escapeHtml(p.fullName)} (${escapeHtml(p.playerId || p.username)})</td>
         <td style="color: var(--accent-amber); font-weight: 700;">${p.totalScore} pts</td>
         <td>${p.completedCount} / 30</td>
         <td>
@@ -863,15 +1110,25 @@ class App {
     // Save Game Settings
     document.getElementById('btn-save-settings').onclick = async () => {
       sound.click();
-      const easyTimer = parseInt(document.getElementById('setting-easy-timer').value) || 90;
-      const mediumTimer = parseInt(document.getElementById('setting-medium-timer').value) || 120;
-      const hardTimer = parseInt(document.getElementById('setting-hard-timer').value) || 150;
-      const hintPenalty = parseInt(document.getElementById('setting-hint-penalty').value) || 15;
+      const readNumber = id => Number.parseInt(document.getElementById(id).value, 10);
+      const easyTimer = readNumber('setting-easy-timer');
+      const mediumTimer = readNumber('setting-medium-timer');
+      const hardTimer = readNumber('setting-hard-timer');
+      const gameDuration = readNumber('setting-game-duration');
+      const mediumThreshold = readNumber('setting-medium-threshold');
+      const hardThreshold = readNumber('setting-hard-threshold');
+      const skipPenalty = readNumber('setting-skip-penalty');
+      const hintPenalty = readNumber('setting-hint-penalty');
       const rulesAnnouncement = document.getElementById('setting-announcement').value;
 
       await this.api('/api/admin/settings', {
         method: 'PUT',
-        body: JSON.stringify({ easyTimer, mediumTimer, hardTimer, hintPenalty, rulesAnnouncement })
+        body: JSON.stringify({
+          easyTimer, mediumTimer, hardTimer, gameDuration, mediumThreshold, hardThreshold, skipPenalty, hintPenalty,
+          skipEnabled: document.getElementById('setting-skip-enabled').checked,
+          hintsEnabled: document.getElementById('setting-hints-enabled').checked,
+          rulesAnnouncement
+        })
       });
       this.toast('Settings saved and applied to all gameplay sessions.', 'success');
     };
